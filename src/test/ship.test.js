@@ -18,6 +18,11 @@ describe("a ship", () => {
     const ship = new Ship(3);
     expect(ship.getIsHorizontal()).toBeTruthy();
     ship.changePlacement()
-    expect(ship.getIsHorizontal()).toBeFalsy();;
+    expect(ship.getIsHorizontal()).toBeFalsy();
+  });
+
+  it('should return length', () => {
+    const ship = new Ship(3);
+    expect(ship.getLength()).toBe(3);
   });
 });
