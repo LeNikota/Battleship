@@ -1,12 +1,12 @@
 export default class Ship {
   #length;
   #hits;
-  #direction;
+  #isHorizontal;
 
   constructor(length){
     this.#length = length | 1;
     this.#hits = 0;
-    this.#direction = 'horizontal';
+    this.#isHorizontal = true;
   }
 
   isSunk(){
@@ -17,11 +17,11 @@ export default class Ship {
     this.#hits++;
   }
 
-  getDirection(){
-    return this.#direction;
+  getIsHorizontal(){
+    return this.#isHorizontal;
   }
 
-  changeDirection(){
-    this.#direction = this.#direction === 'horizontal' ? 'vertical' : 'horizontal'
+  changePlacement(){
+    this.#isHorizontal = !this.#isHorizontal;
   }
 }

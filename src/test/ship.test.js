@@ -1,4 +1,5 @@
 import Ship from "../ship.js";
+
 describe("a ship", () => {
   it("should not sink without enough hits", () => {
     const ship = new Ship(3);
@@ -15,8 +16,8 @@ describe("a ship", () => {
 
   it('should change direction', () => {
     const ship = new Ship(3);
-    expect(ship.getDirection()).toBe('horizontal');
-    ship.changeDirection()
-    expect(ship.getDirection()).toBe('vertical');
+    expect(ship.getIsHorizontal()).toBeTruthy();
+    ship.changePlacement()
+    expect(ship.getIsHorizontal()).toBeFalsy();;
   });
 });
