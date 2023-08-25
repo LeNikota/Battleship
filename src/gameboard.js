@@ -1,10 +1,10 @@
 export default class Gameboard {
   #tiles;
-  // #ships;
+  #ships;
 
   constructor(){
     this.#tiles = Array.from(new Array(10), () => new Array(10).fill({hit: false}))
-    // this.#ships = []; //delete unused
+    this.#ships = [];
   }
 
   isTileValid(x, y){
@@ -28,6 +28,8 @@ export default class Gameboard {
         this.#tiles[x][i] = { hit: false, ship }        
       }
     }
+
+    this.#ships.push(ship)
   }
 
   receiveAttack(x, y){
@@ -40,7 +42,6 @@ export default class Gameboard {
     tile.hit = true;
     if(tile.ship){
       tile.ship.hit()
-      tile.ship.isSunk()
     }
   }
 
@@ -50,5 +51,9 @@ export default class Gameboard {
 
   getTiles(){
     return this.#tiles;
+  }
+
+  checkAllShipsSunk(){
+    return this.#ships.every((ship) => ship.isSunk())
   }
 }

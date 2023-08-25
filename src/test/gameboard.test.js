@@ -71,6 +71,18 @@ describe('gameboard', () => {
     expect(() => gameboard.receiveAttack(5,5)).toThrow()
   });
 
+  it('should check if all ships are sunk', () => {
+    const gameboard = new Gameboard();
+    gameboard.placeShip(new Ship(1), 0,0)
+    gameboard.placeShip(new Ship(3), 5,5)
+    gameboard.receiveAttack(0, 0);
+    expect(gameboard.checkAllShipsSunk()).toBeFalsy();
+    gameboard.receiveAttack(5, 5);
+    gameboard.receiveAttack(6, 5);
+    gameboard.receiveAttack(7, 5);
+    expect(gameboard.checkAllShipsSunk()).toBeTruthy();
+  });
+
   // it('should return result of the attack', () => {
   //   //or register a sunk ship somewhere
   //   const gameboard = new Gameboard();
