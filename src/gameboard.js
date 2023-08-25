@@ -14,9 +14,9 @@ export default class Gameboard {
   placeShip(ship, x, y){
     const length = (ship.getLength() - 1);
 
-    if(ship.getIsHorizontal() && (x < 0 || y < 0 || x > 9 || y > 9 || x + length > 10)) //remove redundancy
+    if(ship.getIsHorizontal() && (!this.isTileValid(x, y) || x + length > 10))
       throw('Placement is out of bounds')
-    if(!ship.getIsHorizontal() && (x < 0 || y < 0 || x > 9 || y > 9 || y + length > 10))
+    if(!ship.getIsHorizontal() && (!this.isTileValid(x, y) || y + length > 10))
       throw('Placement is out of bounds')
 
     if (ship.getIsHorizontal()) {
