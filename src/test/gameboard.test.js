@@ -3,6 +3,17 @@ import Gameboard from "../gameboard.js";
 import Ship from "../ship.js";
 
 describe('gameboard', () => {
+  it('should check is a tile valid', () => {
+    const gameboard = new Gameboard();
+    expect(gameboard.isTileValid(0,-1)).toBeFalsy()
+    expect(gameboard.isTileValid(-1,0)).toBeFalsy()
+    expect(gameboard.isTileValid(-1,-1)).toBeFalsy()
+    expect(gameboard.isTileValid(9,10)).toBeFalsy()
+    expect(gameboard.isTileValid(10,9)).toBeFalsy()
+    expect(gameboard.isTileValid(10,10)).toBeFalsy()
+    expect(gameboard.isTileValid(5,5)).toBeTruthy()
+  });
+
   it('should place a ship', () => {
     const gameboard = new Gameboard();
     const ship = new Ship(1)
@@ -43,4 +54,30 @@ describe('gameboard', () => {
     const ship = new Ship(4).changePlacement();
     expect(() => gameboard.placeShip(ship, 5,8)).toThrow();
   });
+
+  it('should receive attacks', () => {
+    const gameboard = new Gameboard();
+    const ship = new Ship(3)
+    gameboard.placeShip(ship, 5, 5)
+    gameboard.receiveAttack(3,3)
+    gameboard.receiveAttack(6,5)
+    expect(gameboard.getTile(3,3)).toEqual({hit:true});
+    expect(gameboard.getTile(6,5)).toEqual({hit:true, ship});
+   });
+
+  it('should prevent attacking the same tile twice', () => {
+    const gameboard = new Gameboard();
+    gameboard.receiveAttack(5,5)
+    expect(() => gameboard.receiveAttack(5,5)).toThrow()
+  });
+
+  // it('should return result of the attack', () => {
+  //   //or register a sunk ship somewhere
+  //   const gameboard = new Gameboard();
+  //   const ship1 = new Ship(1)
+  //   const ship2 = new Ship(3)
+  //   gameboard.placeShip(ship1, 5, 5)
+  //   gameboard.placeShip(ship2, 2, 2)
+  //   expect(gameboard.receiveAttack(5,5)).toBe();
+  // });
 })
