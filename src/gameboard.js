@@ -46,11 +46,11 @@ export default class Gameboard {
   }
 
   getTile(x, y){
-    return this.#tiles[x][y];
+    return {...this.#tiles[x][y]};
   }
 
   getTiles(){
-    return this.#tiles;
+    return this.#tiles.map(row => row.map(tile => ({...tile})));
   }
 
   checkAllShipsSunk(){
