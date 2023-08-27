@@ -3,7 +3,7 @@ export default class Gameboard {
   #ships;
 
   constructor(){
-    this.#tiles = Array.from(new Array(10), () => new Array(10).fill({hit: false}))
+    this.#tiles = Array.from(new Array(10), () => new Array(10).fill().map(() => ({hit: false})))
     this.#ships = [];
   }
 

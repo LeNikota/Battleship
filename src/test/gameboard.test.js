@@ -1,4 +1,3 @@
-import exp from "constants";
 import Gameboard from "../gameboard.js";
 import Ship from "../ship.js";
 
@@ -25,7 +24,7 @@ describe('gameboard', () => {
     const gameboard = new Gameboard();
     const ship = new Ship(4)
     gameboard.placeShip(ship, 0,0);
-    expect(gameboard.getTile(0,0).ship).toBe(ship)
+    expect(gameboard.getTile(0,0).ship).toBe(ship) //to the future me there is something wrong with ship placement check it, x and y on the paper and row and columns in the array are different
     expect(gameboard.getTile(1,0).ship).toBe(ship)
     expect(gameboard.getTile(2,0).ship).toBe(ship)
     expect(gameboard.getTile(3,0).ship).toBe(ship)
@@ -59,9 +58,10 @@ describe('gameboard', () => {
     const gameboard = new Gameboard();
     const ship = new Ship(3)
     gameboard.placeShip(ship, 5, 5)
-    gameboard.receiveAttack(3,3)
+    gameboard.receiveAttack(0,0)
     gameboard.receiveAttack(6,5)
-    expect(gameboard.getTile(3,3)).toEqual({hit:true});
+    expect(gameboard.getTile(0,0)).toEqual({hit:true});
+    expect(gameboard.getTile(0,1)).toEqual({hit:false});
     expect(gameboard.getTile(6,5)).toEqual({hit:true, ship});
    });
 
@@ -82,14 +82,4 @@ describe('gameboard', () => {
     gameboard.receiveAttack(7, 5);
     expect(gameboard.checkAllShipsSunk()).toBeTruthy();
   });
-
-  // it('should return result of the attack', () => {
-  //   //or register a sunk ship somewhere
-  //   const gameboard = new Gameboard();
-  //   const ship1 = new Ship(1)
-  //   const ship2 = new Ship(3)
-  //   gameboard.placeShip(ship1, 5, 5)
-  //   gameboard.placeShip(ship2, 2, 2)
-  //   expect(gameboard.receiveAttack(5,5)).toBe();
-  // });
 })
