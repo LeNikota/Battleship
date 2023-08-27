@@ -7,7 +7,6 @@ export default class Ship {
     this.#length = length | 1;
     this.#hits = 0;
     this.#isHorizontal = true;
-    // this.#cords = []; //unused delete
   }
 
   isSunk(){
