@@ -9,7 +9,7 @@ export default class Player {
     this.#opponent = opponent;
   }
 
-  attack(x, y){
+  attackOpponent(x, y){
     if(!this.#turn)
       throw('Not your turn')
     

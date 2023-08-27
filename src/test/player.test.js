@@ -13,9 +13,9 @@ describe('a player', () => {
     player1BoardTilesAfter[0][0] = {hit: true}
     player2BoardTilesAfter[0][0] = {hit: true}
 
-    player1.attack(0, 0)
+    player1.attackOpponent(0, 0)
     expect(player2.getBoardTiles()).toEqual(player1BoardTilesAfter)
-    player2.attack(0, 0)
+    player2.attackOpponent(0, 0)
     expect(player1.getBoardTiles()).toEqual(player2BoardTilesAfter)
   });
 
@@ -24,9 +24,9 @@ describe('a player', () => {
     const player2 = new Player(new Gameboard());
     player1.setOpponent(player2);
     player2.setOpponent(player1);
-    player1.attack(0, 0)
+    player1.attackOpponent(0, 0)
     expect(() => player1.attack(1, 1)).toThrow()
-    player2.attack(0, 0)
+    player2.attackOpponent(0, 0)
     expect(() => player2.attack(0, 0)).toThrow()
   });
 
