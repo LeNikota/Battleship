@@ -33,4 +33,21 @@ export default class Player {
   getBoard(){
     return this.#board;
   }
+  
+  getBoardTiles(){
+    return this.#board.getTiles()
+  }
+
+  randomAttackOpponent(){ // later: make ai smarter by if it hits a ship check adjacent tiles
+    if(!this.#turn)
+      throw('Not your turn')
+
+    const x = Math.floor(Math.random() * 10) 
+    const y = Math.floor(Math.random() * 10)
+
+    const opponentBoard = this.#opponent.getBoard()
+    opponentBoard.receiveAttack(x, y)
+    this.#turn = false;
+    this.#opponent.setTurn(true);
+  }
 }

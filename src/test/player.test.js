@@ -8,15 +8,15 @@ describe('a player', () => {
     player1.setOpponent(player2);
     player2.setOpponent(player1);
 
-    const player1BoardTilesAfter = player1.getBoardTiles() 
-    const player2BoardTilesAfter = player2.getBoardTiles()
-    player1BoardTilesAfter[0][0] = {hit: true}
-    player2BoardTilesAfter[0][0] = {hit: true}
+    const player1BoardTilesAfterAttack = player1.getBoardTiles() 
+    const player2BoardTilesAfterAttack = player2.getBoardTiles()
+    player1BoardTilesAfterAttack[0][0] = {hit: true}
+    player2BoardTilesAfterAttack[0][0] = {hit: true}
 
     player1.attackOpponent(0, 0)
-    expect(player2.getBoardTiles()).toEqual(player1BoardTilesAfter)
+    expect(player2.getBoardTiles()).toEqual(player1BoardTilesAfterAttack)
     player2.attackOpponent(0, 0)
-    expect(player1.getBoardTiles()).toEqual(player2BoardTilesAfter)
+    expect(player1.getBoardTiles()).toEqual(player2BoardTilesAfterAttack)
   });
 
   it('should take turns with another player', () => {
@@ -34,4 +34,39 @@ describe('a player', () => {
     const player1 = new Player(new Gameboard());
     expect(()=> player1.setOpponent(player1)).toThrow()
   });
+});
+
+describe('an AI player', () => { // later: make ai smarter by if it hits a ship check adjacent tiles
+  beforeAll(() => {
+    jest.spyOn(Math, 'random').mockReturnValue(0.3)
+  });
+  afterAll(() => {
+    jest.restoreAllMocks()
+  });
+  
+  it('should attack a random tile', () => {
+    const player = new Player(new Gameboard());
+    const aiPlayer = new Player(new Gameboard());
+
+    player.setOpponent(aiPlayer);
+    aiPlayer.setOpponent(player);
+
+    const playerBoardTilesAfterAttack = player.getBoardTiles() 
+    playerBoardTilesAfterAttack[3][3] = {hit: true}
+
+    aiPlayer.randomAttackOpponent();
+    expect(() => aiPlayer.randomAttackOpponent()).toThrow();
+    expect(player.getBoardTiles()).toEqual(playerBoardTilesAfterAttack)
+  })
+
+  it('should take turns with another player', () => {
+    const player = new Player(new Gameboard());
+    const aiPlayer = new Player(new Gameboard());
+
+    player.setOpponent(aiPlayer);
+    aiPlayer.setOpponent(player);
+
+    aiPlayer.randomAttackOpponent();
+    expect(() => aiPlayer.randomAttackOpponent()).toThrow();
+  })
 });
