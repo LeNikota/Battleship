@@ -42,10 +42,18 @@ export default class Player {
     if(!this.#turn)
       throw('Not your turn')
 
-    const x = Math.floor(Math.random() * 10) 
-    const y = Math.floor(Math.random() * 10)
+    const opponentBoard = this.#opponent.getBoard();
+    const opponentBoardTiles = opponentBoard.getTiles();
+    const intactTilesCords = []
+    for (let x = 0; x < opponentBoardTiles.length; x++) {
+      for (let y = 0; y < opponentBoardTiles[x].length; y++) {
+        if(!opponentBoardTiles[x][y].hit)
+          intactTilesCords.push([x,y])
+      }
+    }
 
-    const opponentBoard = this.#opponent.getBoard()
+    const [x, y] = intactTilesCords[Math.floor(Math.random() * intactTilesCords.length)]
+    
     opponentBoard.receiveAttack(x, y)
     this.#turn = false;
     this.#opponent.setTurn(true);

@@ -28,6 +28,8 @@ describe('a player', () => {
     expect(() => player1.attack(1, 1)).toThrow()
     player2.attackOpponent(0, 0)
     expect(() => player2.attack(0, 0)).toThrow()
+    player1.attackOpponent(1, 1)
+    expect(() => player1.attack(2, 2)).toThrow()
   });
 
   it('should not allow setting youself as an opponent', () => {
@@ -38,7 +40,7 @@ describe('a player', () => {
 
 describe('an AI player', () => { // later: make ai smarter by if it hits a ship check adjacent tiles
   beforeAll(() => {
-    jest.spyOn(Math, 'random').mockReturnValue(0.3)
+    jest.spyOn(Math, 'random').mockReturnValue(0.01)
   });
   afterAll(() => {
     jest.restoreAllMocks()
@@ -52,7 +54,7 @@ describe('an AI player', () => { // later: make ai smarter by if it hits a ship 
     aiPlayer.setOpponent(player);
 
     const playerBoardTilesAfterAttack = player.getBoardTiles() 
-    playerBoardTilesAfterAttack[3][3] = {hit: true}
+    playerBoardTilesAfterAttack[0][1] = {hit: true}
 
     aiPlayer.randomAttackOpponent();
     expect(() => aiPlayer.randomAttackOpponent()).toThrow();
@@ -68,5 +70,24 @@ describe('an AI player', () => { // later: make ai smarter by if it hits a ship 
 
     aiPlayer.randomAttackOpponent();
     expect(() => aiPlayer.randomAttackOpponent()).toThrow();
+    player.attackOpponent(0,0);
+    aiPlayer.randomAttackOpponent();
+  })
+
+  it('should not randomly attack the same tile twice', () => {
+    const player = new Player(new Gameboard());
+    const aiPlayer = new Player(new Gameboard());
+
+    player.setOpponent(aiPlayer);
+    aiPlayer.setOpponent(player);
+
+    const playerBoardTilesAfterAttack = player.getBoardTiles() 
+    playerBoardTilesAfterAttack[0][0] = {hit: true}
+    playerBoardTilesAfterAttack[0][1] = {hit: true}
+
+    aiPlayer.randomAttackOpponent();
+    player.attackOpponent(0, 0);
+    expect(() => aiPlayer.randomAttackOpponent()).not.toThrow(); 
+    expect(player.getBoardTiles()).toEqual(playerBoardTilesAfterAttack);
   })
 });
