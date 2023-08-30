@@ -15,6 +15,7 @@
   --bg-ship-hit:rgba(219, 56, 56, .05);
   --border-ship-selected:rgb(17, 235, 71);
   --bg-ship-selected:rgba(0, 255, 64, .05);
+  --dialog-bg: #00000050;
 }
 
 body{
@@ -33,6 +34,7 @@ h1{
 h2{
   font-weight: 500;
   font-size: 2rem;
+  margin: 0px;
 }
 
 main{
@@ -42,7 +44,7 @@ main{
   gap: 100px;
 }
 
-.player-board, .enemy-board{
+.board{
   width: 500px;
   height: 500px;
   display: grid;
@@ -52,16 +54,16 @@ main{
   position: relative;
 }
 
-.player-board__tile, .enemy-board__tile{
+.board__tile {
   border-right: 1px var(--border-inner) solid;
   border-bottom: 1px var(--border-inner) solid;
 }
 
-:is(.player-board__tile, .enemy-board__tile):nth-child(10n){
+.board__tile:nth-child(10n){
   border-right: none;
 }
 
-:is(.player-board__tile, .enemy-board__tile):nth-child(n + 91){
+.board__tile:nth-child(n + 91){
   border-bottom: none;
 }
 
@@ -84,4 +86,57 @@ main{
 .ship .selected{
   background-color: var(--bg-ship-selected);
   border: 3px solid var(--border-ship-selected);
+}
+
+/* Dialog window */
+
+.dialog{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--dialog-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog-window{
+  background-color: var(--primary);
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.dialog-window h3{
+  font-weight: 400;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.game-setup{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ship-selection-option{
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ship-selection-option p{
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.ship-selection-option div {
+  width: calc(50px * var(--size));
+  height: 50px;
+  background-color: var(--bg-ship);
+  border: 3px solid var(--border-ship);
+  cursor: pointer;
 }
