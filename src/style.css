@@ -11,8 +11,8 @@
   --border-inner: #160f3069;
   --border-ship:#00f;
   --bg-ship:rgba(0,0,255,.05);
-  --border-ship-hit:rgb(219, 56, 56);
-  --bg-ship-hit:rgba(219, 56, 56, .05);
+  --border-ship-sunk:rgb(219, 56, 56);
+  --bg-ship-sunk:rgba(219, 56, 56, .05);
   --border-ship-selected:rgb(17, 235, 71);
   --bg-ship-selected:rgba(0, 255, 64, .05);
   --dialog-bg: #00000050;
@@ -35,6 +35,10 @@ h2{
   font-weight: 500;
   font-size: 2rem;
   margin: 0px;
+}
+
+img {
+  height: 30px;
 }
 
 main{
@@ -72,20 +76,18 @@ main{
   border: 3px solid var(--border-ship);
   z-index: 0;
   position: absolute;
-  top: -3px;
-  left: -3px;
-  width: 49px;
-  height: 49px;
+  width: 50px;
+  height: 50px;
 }
 
-.ship .hit{
-  background-color: var(--bg-ship-hit);
-  border: 3px solid var(--border-ship-hit);
+.hit{
+  background-color: var(--bg-ship-sunk) !important;
+  border: 3px solid var(--border-ship-sunk) !important;
 }
 
-.ship .selected{
-  background-color: var(--bg-ship-selected);
-  border: 3px solid var(--border-ship-selected);
+.selected{
+  background-color: var(--bg-ship-selected) !important;
+  border: 3px solid var(--border-ship-selected) !important;
 }
 
 /* Dialog window */
