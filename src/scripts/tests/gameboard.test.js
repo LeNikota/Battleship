@@ -3,14 +3,13 @@ import Ship from "../ship.js";
 
 describe('gameboard', () => {
   it('should check is a tile valid', () => {
-    const gameboard = new Gameboard();
-    expect(gameboard.isTileValid(0,-1)).toBeFalsy()
-    expect(gameboard.isTileValid(-1,0)).toBeFalsy()
-    expect(gameboard.isTileValid(-1,-1)).toBeFalsy()
-    expect(gameboard.isTileValid(9,10)).toBeFalsy()
-    expect(gameboard.isTileValid(10,9)).toBeFalsy()
-    expect(gameboard.isTileValid(10,10)).toBeFalsy()
-    expect(gameboard.isTileValid(5,5)).toBeTruthy()
+    expect(Gameboard.isTileValid(0,-1)).toBeFalsy()
+    expect(Gameboard.isTileValid(-1,0)).toBeFalsy()
+    expect(Gameboard.isTileValid(-1,-1)).toBeFalsy()
+    expect(Gameboard.isTileValid(9,10)).toBeFalsy()
+    expect(Gameboard.isTileValid(10,9)).toBeFalsy()
+    expect(Gameboard.isTileValid(10,10)).toBeFalsy()
+    expect(Gameboard.isTileValid(5,5)).toBeTruthy()
   });
 
   it('should place a ship', () => {
