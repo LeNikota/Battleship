@@ -22,7 +22,7 @@ describe("a ship", () => {
   });
 
   it('should return length', () => {
-    const ship = new Ship(3);
-    expect(ship.getLength()).toBe(3);
+    const ship = new Ship(2);
+    expect(ship.getLength()).toBe(2);
   });
 });

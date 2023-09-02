@@ -27,6 +27,7 @@ describe('gameboard', () => {
     expect(gameboard.getTile(0,1).ship).toBe(ship)
     expect(gameboard.getTile(0,2).ship).toBe(ship)
     expect(gameboard.getTile(0,3).ship).toBe(ship)
+    expect(gameboard.getTile(0,4).ship).toBeUndefined();
   });
 
   it('should place a ship vertically', () => {
@@ -37,6 +38,7 @@ describe('gameboard', () => {
     expect(gameboard.getTile(5,4).ship).toBe(ship)
     expect(gameboard.getTile(6,4).ship).toBe(ship)
     expect(gameboard.getTile(7,4).ship).toBe(ship)
+    expect(gameboard.getTile(8,4).ship).toBeUndefined();
   });
 
   it('should prevent placing a ship beyond the gameboard boundaries', () => {
@@ -48,8 +50,9 @@ describe('gameboard', () => {
     expect(() => gameboard.placeShip(new Ship(1), 9,10)).toThrow();
     expect(() => gameboard.placeShip(new Ship(1), 10,10)).toThrow();
     expect(() => gameboard.placeShip(new Ship(4), 8,8)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(4), 8,5)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(4).changePlacement(), 5,8)).toThrow();
+    expect(() => gameboard.placeShip(new Ship(4), 0,6)).not.toThrow();
+    expect(() => gameboard.placeShip(new Ship(4).changePlacement(), 8,9)).toThrow();
+    expect(() => gameboard.placeShip(new Ship(4).changePlacement(), 6,9)).not.toThrow();
   });
 
   it('should prevent placing a ship near or across a placed ship', () => {

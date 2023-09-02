@@ -31,9 +31,9 @@ export default class Gameboard {
     const length = (ship.getLength() - 1);
     const isHorizontal = ship.getIsHorizontal();
 
-    if(isHorizontal && (!Gameboard.checkTileValidity(x, y) || x + length > 10))
+    if(isHorizontal && (!Gameboard.checkTileValidity(x, y) || y + length >= 10))
       throw('Placement is out of bounds')
-    if(!isHorizontal && (!Gameboard.checkTileValidity(x, y) || y + length > 10))
+    if(!isHorizontal && (!Gameboard.checkTileValidity(x, y) || x + length >= 10))
       throw('Placement is out of bounds')
     if(!this.checkPlacementValidity(x, y, length, isHorizontal))
       throw('Placing near or across already placed ship')
@@ -50,7 +50,7 @@ export default class Gameboard {
       }
     }
 
-    this.#ships.push(ship)
+    this.#ships.push({ship, x, y})
   }
 
   receiveAttack(x, y){
@@ -74,7 +74,11 @@ export default class Gameboard {
     return this.#tiles.map(row => row.map(tile => ({...tile})));
   }
 
+  getShips(){
+    return this.#ships;
+  }
+
   checkAllShipsSunk(){
-    return this.#ships.every((ship) => ship.isSunk())
+    return this.#ships.every(({ship}) => ship.isSunk())
   }
 }

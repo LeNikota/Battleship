@@ -3,8 +3,8 @@ export default class Ship {
   #hits;
   #isHorizontal;
 
-  constructor(length){
-    this.#length = length | 1;
+  constructor(length = 1){
+    this.#length = length;
     this.#hits = 0;
     this.#isHorizontal = true;
   }
