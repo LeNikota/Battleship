@@ -124,6 +124,10 @@ main{
   gap: 1rem;
 }
 
+.ship-selection{
+  min-width: 240px;
+}
+
 .ship-selection-option{
   display: grid;
   grid-template-columns: 30px 1fr;
