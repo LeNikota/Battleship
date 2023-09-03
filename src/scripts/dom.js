@@ -7,6 +7,7 @@ const enemyBoardsEl = document.querySelector('.enemy.board')
 const boards = document.querySelectorAll('.board')
 const shipSelectionEl = document.querySelector('.ship-selection')
 const setupButtonContainerEl = document.querySelector('.setup-button-container')
+const warningEl = document.querySelector('.warning')
 
 const SHIP_SIZES_LIST = {
   large: 4,
@@ -15,6 +16,7 @@ const SHIP_SIZES_LIST = {
   small: 1
 }
 let selectedShipEl = null
+let warningTimeoutID = null
 
 
 function fillBoardsWithTiles() {
@@ -92,7 +94,7 @@ function setupButtonContainerElClick({ target }) {
       PubSub.publish('resetBoard', null)
       break;
     case 'Start':
-      
+      PubSub.publish('startGame', null)
       break;
   }
 }
@@ -135,11 +137,12 @@ function renderSetupBoard(board) {
   })
 
   if(board.getShips().length === 10){
-    clearShipSelectionEl();
     deselectShip()
+    clearShipSelectionEl();
   }
 
   if(board.getShips().length === 0){
+    deselectShip()
     resetShipSelectionEl()
   }
 
@@ -155,6 +158,18 @@ function renderSetupBoard(board) {
   }
 }
 
+function toggleDialogWindow() {
+  dialogEl.style.display =
+    dialogEl.style.display === "none" ? "flex" : "none";
+}
+
+function displayWarning(message) {
+  clearTimeout(warningTimeoutID)
+  warningEl.lastElementChild.textContent = message;
+  warningEl.style.top = '80vh';
+  warningTimeoutID  = setTimeout(() => warningEl.style.top = '120vh', 2000);
+}
+
 function init() {
   fillBoardsWithTiles()
   shipSelectionEl.addEventListener('click', shipSelectionElClick)
@@ -162,4 +177,4 @@ function init() {
   setupButtonContainerEl.addEventListener('click', setupButtonContainerElClick)
 }
 
-export { init, renderSetupBoard }
+export { init, renderSetupBoard, displayWarning }

@@ -10,13 +10,21 @@ const setupBoard = new Gameboard();
 
 
 function handleSetUpBoardClick({size, x, y}) {
-  setupBoard.placeShip(new Ship(size), x, y)
-  dom.renderSetupBoard(setupBoard)
+  try {
+    setupBoard.placeShip(new Ship(size), x, y)
+    dom.renderSetupBoard(setupBoard)
+  } catch (error) {
+    dom.displayWarning(error)
+  }
 }
 
 function handlePlaceShipRandomlyEvent() {
-  setupBoard.placeShipsRandomly(Ship);
-  dom.renderSetupBoard(setupBoard);
+  try {
+    setupBoard.placeShipsRandomly(Ship);
+    dom.renderSetupBoard(setupBoard);
+  } catch (error) {
+    dom.displayWarning(error)
+  }
 }
 
 function handleResetBoardEvent() {
@@ -24,13 +32,25 @@ function handleResetBoardEvent() {
   dom.renderSetupBoard(setupBoard);
 }
 
+function handleStartGameEvent() {
+  if (setupBoard.getShips().length !== 10) {
+    dom.displayWarning('Not all ships have been placed')
+  }
+
+  //some logic to start game
+}
+
 PubSub.subscribe('setupBoardClick', handleSetUpBoardClick)
 PubSub.subscribe('placeShipRandomly', handlePlaceShipRandomlyEvent)
 PubSub.subscribe('resetBoard', handleResetBoardEvent)
+PubSub.subscribe('startGame', handleStartGameEvent)
 
 
-// gameboard should allow to reset itself and randomly place ships
 // change name of functions and variables from shipPlacement to shipOrintation
 // let gameboard = new Gameboard() //use its build-in method to notify a user about out of bound placement of a ship or across other ships
 // make ships rotatable on setup
+// make AI smarter
 //complete this project already there's no time left! university awaits! and english learning too
+
+
+// use localStorage so when player exit he can continue playing? - not necessary
