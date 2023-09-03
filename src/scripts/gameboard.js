@@ -70,7 +70,7 @@ export default class Gameboard {
         if(isVertical) ship.changePlacement()
 
         try {
-          this.placeShip(ship, length, x, y)
+          this.placeShip(ship, x, y)
           shipPlaced = true;
         } catch {
           attempts++;
