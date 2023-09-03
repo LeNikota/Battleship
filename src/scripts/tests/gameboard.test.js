@@ -2,6 +2,11 @@ import Gameboard from "../gameboard.js";
 import Ship from "../ship.js";
 
 describe('gameboard', () => {
+  let gameboard;
+  beforeEach(()=> {
+    gameboard = new Gameboard();
+  })
+
   it('should check is a tile valid', () => {
     expect(Gameboard.checkTileValidity(0,-1)).toBeFalsy()
     expect(Gameboard.checkTileValidity(-1,0)).toBeFalsy()
@@ -13,14 +18,12 @@ describe('gameboard', () => {
   });
 
   it('should place a ship', () => {
-    const gameboard = new Gameboard();
     const ship = new Ship(1)
     gameboard.placeShip(ship, 0,0);
     expect(gameboard.getTile(0,0).ship).toBe(ship)
   })
 
   it('should place a ship horizontally', () => {
-    const gameboard = new Gameboard();
     const ship = new Ship(4)
     gameboard.placeShip(ship, 0,0);
     expect(gameboard.getTile(0,0).ship).toBe(ship)
@@ -31,7 +34,6 @@ describe('gameboard', () => {
   });
 
   it('should place a ship vertically', () => {
-    const gameboard = new Gameboard();
     const ship = new Ship(4).changePlacement()
     gameboard.placeShip(ship, 4,4);
     expect(gameboard.getTile(4,4).ship).toBe(ship)
@@ -42,7 +44,6 @@ describe('gameboard', () => {
   });
 
   it('should prevent placing a ship beyond the gameboard boundaries', () => {
-    const gameboard = new Gameboard();
     expect(() => gameboard.placeShip(new Ship(1), 0,-1)).toThrow();
     expect(() => gameboard.placeShip(new Ship(1), -1,0)).toThrow();
     expect(() => gameboard.placeShip(new Ship(1), -1,-1)).toThrow();
@@ -56,7 +57,6 @@ describe('gameboard', () => {
   });
 
   it('should prevent placing a ship near or across a placed ship', () => {
-    const gameboard = new Gameboard();
     gameboard.placeShip(new Ship(4), 3,3)
     expect(() => gameboard.placeShip(new Ship(4), 3,0)).toThrow();
     expect(() => gameboard.placeShip(new Ship(4), 3,3)).toThrow();
@@ -66,7 +66,6 @@ describe('gameboard', () => {
   });
 
   it('should receive attacks', () => {
-    const gameboard = new Gameboard();
     const ship = new Ship(3)
     gameboard.placeShip(ship, 5, 5)
     gameboard.receiveAttack(0,0)
@@ -77,13 +76,11 @@ describe('gameboard', () => {
    });
 
   it('should prevent attacking the same tile twice', () => {
-    const gameboard = new Gameboard();
     gameboard.receiveAttack(5,5)
     expect(() => gameboard.receiveAttack(5,5)).toThrow()
   });
 
   it('should check if all ships are sunk', () => {
-    const gameboard = new Gameboard();
     gameboard.placeShip(new Ship(1), 0,0)
     gameboard.placeShip(new Ship(3), 5,5)
     gameboard.receiveAttack(0, 0);
@@ -92,5 +89,57 @@ describe('gameboard', () => {
     gameboard.receiveAttack(5, 6);
     gameboard.receiveAttack(5, 7);
     expect(gameboard.checkAllShipsSunk()).toBeTruthy();
+  });
+
+  it('should reset the gameboard tiles and ships', () => {
+    const ship1 = new Ship(3);
+    const ship2 = new Ship(2);
+    gameboard.placeShip(ship1, 0, 0);
+    gameboard.placeShip(ship2, 2, 2);
+    gameboard.receiveAttack(5,5);
+
+    gameboard.reset();
+
+    const tiles = gameboard.getTiles();
+    const ships = gameboard.getShips();
+
+    expect(tiles.every(row => row.every(tile => !tile.hit))).toBe(true);
+    expect(ships).toHaveLength(0);
+  });
+
+  describe('placeShipsRandomly', () => {
+    it('should place ships randomly without errors', () => {
+      expect(() => gameboard.placeShipsRandomly(Ship)).not.toThrow();
+    });
+
+    it('should clear the board before place ships randomly', () => {
+      const ship = new Ship(4)
+      gameboard.placeShip(ship, 0, 0)
+      gameboard.placeShipsRandomly(Ship);
+      expect(gameboard.getTile(0, 0).ship).not.toBe(ship);
+    });
+
+    it('should place all required ships', () => {
+      gameboard.placeShipsRandomly(Ship);
+
+      const ships = gameboard.getShips();
+      const shipLengths = ships.map(({ ship }) => ship.getLength());
+
+      expect(shipLengths).toEqual([4, 3, 3, 2, 2, 2, 1, 1, 1, 1]);
+    });
+
+    it('should reset the gameboard and throw error if placement attempts exceed the limit', () => {
+      jest.spyOn(Math, 'random').mockReturnValue(0);
+
+      expect(() => gameboard.placeShipsRandomly()).toThrow();
+
+      const tiles = gameboard.getTiles();
+      const ships = gameboard.getShips();
+
+      expect(tiles.every(row => row.every(tile => !tile.hit))).toBe(true);
+      expect(ships.length).toBe(0);
+
+      jest.restoreAllMocks()
+    });
   });
 })

@@ -53,10 +53,47 @@ export default class Gameboard {
     this.#ships.push({ship, x, y})
   }
 
+  placeShipsRandomly(Ship) {
+    this.reset();
+    const MAX_ATTEMPTS_PER_SHIP = 100;
+    const shipLengths = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+
+    for (const length of shipLengths) {
+      let shipPlaced = false;
+      let attempts = 0;
+
+      while (!shipPlaced) {
+        const x = Math.floor(Math.random() * 10);
+        const y = Math.floor(Math.random() * 10);
+        const isVertical = !!Math.floor(Math.random() * 2);
+        const ship = new Ship(length)
+        if(isVertical) ship.changePlacement()
+
+        try {
+          this.placeShip(ship, length, x, y)
+          shipPlaced = true;
+        } catch {
+          attempts++;
+          if(attempts > MAX_ATTEMPTS_PER_SHIP) {
+            this.reset();
+            throw `Exceeded placement attempts limit for a ship of length ${length}`;
+          }
+        }
+      }
+    }
+  }
+
+  reset(){
+    this.#tiles = Array.from(new Array(10), () => new Array(10).fill().map(() => ({hit: false})))
+    this.#ships = [];
+  }
+
   receiveAttack(x, y){
-    const tile = this.#tiles[x][y];
     if(!Gameboard.checkTileValidity(x, y))
       throw('The tile is out of bounds')
+
+    const tile = this.#tiles[x][y];
+    
     if(tile.hit)
       throw('The tile has been already hit')
     
