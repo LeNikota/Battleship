@@ -82,10 +82,6 @@
     PubSub.publish('setupBoardClick', {size, x , y})
   }
 
-  function clearSetupBoard() {
-    setupBoardEl.querySelectorAll('.ship').forEach(ship => ship.remove())
-  }
-
   function setupButtonContainerElClick({ target }) {
     switch (target.textContent) {
       case 'Random':
@@ -100,31 +96,64 @@
     }
   }
 
+  function clearSetupBoard() {
+    setupBoardEl.querySelectorAll('.ship').forEach(ship => ship.remove())
+  }
+
+  function clearShipSelectionEl(){
+    while(shipSelectionEl.firstChild) {
+      shipSelectionEl.removeChild(shipSelectionEl.firstChild);
+    }
+  }
+
+  function resetShipSelectionEl() {
+    shipSelectionEl.innerHTML = `
+      <div class="ship-selection-option">
+        <p class="amount">1x</p>
+        <div class="large" style="--size: 4"></div>
+      </div>
+      <div class="ship-selection-option">
+        <p class="amount">2x</p>
+        <div class="big" style="--size: 3"></div>
+      </div>
+      <div class="ship-selection-option">
+        <p class="amount">3x</p>
+        <div class="middle" style="--size: 2"></div>
+      </div>
+      <div class="ship-selection-option">
+        <p class="amount">4x</p>
+        <div class="small" style="--size: 1"></div>
+      </div>   
+    `
+  }
+
+
   function renderSetupBoard(board) {
     clearSetupBoard()
     board.getShips().forEach(({ship, x, y}) => {
       createShip(setupBoardEl, ship.getLength(), ship.getIsHorizontal(), x, y);
     })
 
+    if(board.getShips().length === 10){
+      clearShipSelectionEl();
+      deselectShip()
+    }
 
+    if(board.getShips().length === 0){
+      resetShipSelectionEl()
+    }
 
-    
-    // if(shipSelectionEl.childNodes.length !== 0){
-    //   const amountDisplay = selectedShipEl.previousElementSibling;
-    //   const amountLeft = amountDisplay.textContent[0] - 1;
-    //   amountDisplay.textContent = `${amountLeft}x`;
-
-    // const amountDisplay = selectedShipEl.previousElementSibling;
-    // const amountLeft = amountDisplay.textContent[0] - 1;
-    // amountDisplay.textContent = `${amountLeft}x`;
-
-    // if (amountLeft < 1) {
-    //   selectedShipEl.parentElement.remove();
-    //   deselectShip();
-    // }
+    if(selectedShipEl){
+      const amountDisplay = selectedShipEl.previousElementSibling;
+      const amountLeft = amountDisplay.textContent[0] - 1;
+      amountDisplay.textContent = `${amountLeft}x`;
+  
+      if (amountLeft < 1) {
+        selectedShipEl.parentElement.remove();
+        deselectShip();
+      }
+    }
   }
-
-
 
   function init() {
     fillBoardsWithTiles()
