@@ -16,9 +16,9 @@ describe("a ship", () => {
 
   it('should change direction', () => {
     const ship = new Ship(3);
-    expect(ship.getIsHorizontal()).toBeTruthy();
-    ship.changePlacement()
-    expect(ship.getIsHorizontal()).toBeFalsy();
+    expect(ship.getOrientation()).toBeTruthy();
+    ship.toggleOrientation()
+    expect(ship.getOrientation()).toBeFalsy();
   });
 
   it('should return length', () => {

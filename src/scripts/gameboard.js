@@ -29,7 +29,7 @@ export default class Gameboard {
 
   placeShip(ship, x, y){
     const length = (ship.getLength() - 1);
-    const isHorizontal = ship.getIsHorizontal();
+    const isHorizontal = ship.getOrientation();
 
     if(isHorizontal && (!Gameboard.checkTileValidity(x, y) || y + length >= 10))
       throw('Placement is out of bounds')
@@ -67,7 +67,7 @@ export default class Gameboard {
         const y = Math.floor(Math.random() * 10);
         const isVertical = !!Math.floor(Math.random() * 2);
         const ship = new Ship(length)
-        if(isVertical) ship.changePlacement()
+        if(isVertical) ship.toggleOrientation()
 
         try {
           this.placeShip(ship, x, y)

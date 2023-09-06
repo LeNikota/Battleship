@@ -17,11 +17,11 @@ export default class Ship {
     this.#hits++;
   }
 
-  getIsHorizontal(){
+  getOrientation(){
     return this.#isHorizontal;
   }
 
-  changePlacement(){
+  toggleOrientation(){
     this.#isHorizontal = !this.#isHorizontal;
     return this;
   }

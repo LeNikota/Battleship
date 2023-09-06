@@ -34,7 +34,7 @@ describe('gameboard', () => {
   });
 
   it('should place a ship vertically', () => {
-    const ship = new Ship(4).changePlacement()
+    const ship = new Ship(4).toggleOrientation()
     gameboard.placeShip(ship, 4,4);
     expect(gameboard.getTile(4,4).ship).toBe(ship)
     expect(gameboard.getTile(5,4).ship).toBe(ship)
@@ -52,8 +52,8 @@ describe('gameboard', () => {
     expect(() => gameboard.placeShip(new Ship(1), 10,10)).toThrow();
     expect(() => gameboard.placeShip(new Ship(4), 8,8)).toThrow();
     expect(() => gameboard.placeShip(new Ship(4), 0,6)).not.toThrow();
-    expect(() => gameboard.placeShip(new Ship(4).changePlacement(), 8,9)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(4).changePlacement(), 6,9)).not.toThrow();
+    expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 8,9)).toThrow();
+    expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 6,9)).not.toThrow();
   });
 
   it('should prevent placing a ship near or across a placed ship', () => {
@@ -61,8 +61,8 @@ describe('gameboard', () => {
     expect(() => gameboard.placeShip(new Ship(4), 3,0)).toThrow();
     expect(() => gameboard.placeShip(new Ship(4), 3,3)).toThrow();
     expect(() => gameboard.placeShip(new Ship(4), 3,4)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(4).changePlacement(), 2,4)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(4).changePlacement(), 0,5)).toThrow();
+    expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 2,4)).toThrow();
+    expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 0,5)).toThrow();
   });
 
   it('should receive attacks', () => {
