@@ -3,6 +3,7 @@
 :root{
   box-sizing: border-box;
   font-family: 'Barlow', sans-serif;
+  user-select: none;
   --primary: #eeeeee;
   --secondary: #F05454;
   --tertiary: #30475E;
@@ -78,6 +79,14 @@ main{
 
 .board__tile:nth-child(n + 91){
   border-bottom: none;
+}
+
+.board.player{
+  cursor: not-allowed;
+}
+
+.board.enemy{
+  cursor: crosshair;
 }
 
 .ship {
@@ -213,7 +222,6 @@ main{
   align-items: center;
   gap: 1rem;
   transition: ease 0.7s;
-  user-select: none;
   pointer-events: none;
 }
 

@@ -6,56 +6,59 @@ import Ship from './ship'
 
 dom.init()
 
-const setupBoard = new Gameboard();
+const playerBoard = new Gameboard();
 
 
 function handleSetUpBoardClick({size, isHorizontal, x, y}) {
   try {
-    setupBoard.placeShip(
+    playerBoard.placeShip(
       isHorizontal ? new Ship(size) : new Ship(size).toggleOrientation(),
       x,
       y
     );
-    dom.renderSetupBoard(setupBoard)
+    dom.updateSetupWindow(playerBoard)
   } catch (error) {
     dom.displayWarning(error)
   }
 }
 
+function handleEnemyBoardClick({}) {
+  
+}
+
 function handlePlaceShipRandomlyEvent() {
   try {
-    setupBoard.placeShipsRandomly(Ship);
-    dom.renderSetupBoard(setupBoard);
+    playerBoard.placeShipsRandomly(Ship);
+    dom.updateSetupWindow(playerBoard);
   } catch (error) {
     dom.displayWarning(error)
   }
 }
 
 function handleResetBoardEvent() {
-  setupBoard.reset();
-  dom.renderSetupBoard(setupBoard);
+  playerBoard.reset();
+  dom.updateSetupWindow(playerBoard);
 }
 
 function handleStartGameEvent() {
-  if (setupBoard.getShips().length !== 10) {
+  if (playerBoard.getShips().length !== 10) {
     dom.displayWarning('Not all ships have been placed')
     return;
   }
 
-  //some logic to start game
+  dom.toggleDialogWindow()
+  dom.renderBoard('player', playerBoard)
 }
 
 PubSub.subscribe('setupBoardClick', handleSetUpBoardClick)
+PubSub.subscribe('enemyBoardClick', handleEnemyBoardClick)
 PubSub.subscribe('placeShipRandomly', handlePlaceShipRandomlyEvent)
 PubSub.subscribe('resetBoard', handleResetBoardEvent)
 PubSub.subscribe('startGame', handleStartGameEvent)
 
+// todo complete this project already there's no time left! university awaits! and english learning too
 //!add ability to move ships when they already placed on the setup board
-// change name of functions and variables from shipPlacement to shipOrintation
-// let gameboard = new Gameboard() //use its build-in method to notify a user about out of bound placement of a ship or across other ships
-// make ships rotatable on setup
-// make AI smarter
-//complete this project already there's no time left! university awaits! and english learning too
-
-
-// use localStorage so when player exit he can continue playing? - not necessary
+//!check how site looks on mobile
+// todo make AI smarter
+// todo add menu so a player can save a game and restart (use dialog window)
+// todo use localStorage so when player exit he can continue playing? (or go to menu and saves the game in its state) - not necessary

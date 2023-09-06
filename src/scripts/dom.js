@@ -3,7 +3,7 @@ import PubSub from "./pubsub"
 const dialogEl = document.querySelector('.dialog')
 const setupBoardEl = document.querySelector('.setup.board')
 const playerBoardEl = document.querySelector('.player.board')
-const enemyBoardsEl = document.querySelector('.enemy.board')
+const enemyBoardEl = document.querySelector('.enemy.board')
 const boards = document.querySelectorAll('.board')
 const shipSelectionEl = document.querySelector('.ship-selection')
 const setupButtonContainerEl = document.querySelector('.setup-button-container')
@@ -14,6 +14,11 @@ const SHIP_SIZES_LIST = {
   big: 3,
   middle: 2,
   small: 1
+}
+const BOARD_TYPES = {
+  setup: setupBoardEl,
+  player: playerBoardEl,
+  enemy: enemyBoardEl
 }
 let selectedShipEl = null
 let isHorizontal = true
@@ -91,6 +96,14 @@ function setupBoardElClick({ target }) {
   PubSub.publish('setupBoardClick', {size, isHorizontal, x , y})
 }
 
+function enemyBoardElClick({ target }) {
+  if (!selectedShipEl || target.className !== 'board__tile') {
+    return;
+  }
+
+  PubSub.publish('enemyBoardClick', target)
+}
+
 function setupButtonContainerElClick({ target }) {
   switch (target.textContent) {
     case 'Random':
@@ -108,8 +121,9 @@ function setupButtonContainerElClick({ target }) {
   }
 }
 
-function clearSetupBoard() {
-  setupBoardEl.querySelectorAll('.ship').forEach(ship => ship.remove())
+function clearBoard(type) {
+  const boardEl = BOARD_TYPES[type]
+  boardEl.querySelectorAll('.ship').forEach(ship => ship.remove())
 }
 
 function clearShipSelectionEl(){
@@ -139,11 +153,9 @@ function resetShipSelectionEl() {
   `
 }
 
-function renderSetupBoard(board) {
-  clearSetupBoard()
-  board.getShips().forEach(({ship, x, y}) => {
-    createShip(setupBoardEl, ship.getLength(), ship.getOrientation(), x, y);
-  })
+function updateSetupWindow(board) {
+  clearBoard('setup')
+  renderBoard('setup', board)
 
   if(board.getShips().length === 10){
     deselectShip()
@@ -167,6 +179,14 @@ function renderSetupBoard(board) {
   }
 }
 
+function renderBoard(type, board) {
+  const boardEl = BOARD_TYPES[type]
+
+  board.getShips().forEach(({ ship, x, y }) => {
+    createShip(boardEl, ship.getLength(), ship.getOrientation(), x, y);
+  });
+}
+
 function toggleDialogWindow() {
   dialogEl.style.display =
     dialogEl.style.display === "none" ? "flex" : "none";
@@ -183,7 +203,8 @@ function init() {
   fillBoardsWithTiles()
   shipSelectionEl.addEventListener('click', shipSelectionElClick)
   setupBoardEl.addEventListener('click', setupBoardElClick)
+  enemyBoardEl.addEventListener('click', enemyBoardElClick)
   setupButtonContainerEl.addEventListener('click', setupButtonContainerElClick)
 }
 
-export { init, renderSetupBoard, displayWarning }
+export { init, updateSetupWindow, renderBoard, displayWarning, toggleDialogWindow }
