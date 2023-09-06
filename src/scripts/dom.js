@@ -16,6 +16,7 @@ const SHIP_SIZES_LIST = {
   small: 1
 }
 let selectedShipEl = null
+let isHorizontal = true
 let warningTimeoutID = null
 
 
@@ -61,6 +62,11 @@ function deselectShip() {
   }
 }
 
+function toggleShipOrientation() {
+  isHorizontal = !isHorizontal;
+  shipSelectionEl.classList.toggle('rotated');
+}
+
 function shipSelectionElClick({ target }) {
   if (!(target.classList[0] in SHIP_SIZES_LIST)) {
     return;
@@ -82,7 +88,7 @@ function setupBoardElClick({ target }) {
   const x = +target.dataset.x;
   const y = +target.dataset.y;
 
-  PubSub.publish('setupBoardClick', {size, x , y})
+  PubSub.publish('setupBoardClick', {size, isHorizontal, x , y})
 }
 
 function setupButtonContainerElClick({ target }) {
@@ -92,6 +98,9 @@ function setupButtonContainerElClick({ target }) {
       break;
     case 'Reset':
       PubSub.publish('resetBoard', null)
+      break;
+    case 'Rotate (R)':
+      toggleShipOrientation()
       break;
     case 'Start':
       PubSub.publish('startGame', null)
@@ -133,7 +142,7 @@ function resetShipSelectionEl() {
 function renderSetupBoard(board) {
   clearSetupBoard()
   board.getShips().forEach(({ship, x, y}) => {
-    createShip(setupBoardEl, ship.getLength(), ship.getIsHorizontal(), x, y);
+    createShip(setupBoardEl, ship.getLength(), ship.getOrientation(), x, y);
   })
 
   if(board.getShips().length === 10){

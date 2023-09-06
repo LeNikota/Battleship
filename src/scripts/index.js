@@ -9,9 +9,13 @@ dom.init()
 const setupBoard = new Gameboard();
 
 
-function handleSetUpBoardClick({size, x, y}) {
+function handleSetUpBoardClick({size, isHorizontal, x, y}) {
   try {
-    setupBoard.placeShip(new Ship(size), x, y)
+    setupBoard.placeShip(
+      isHorizontal ? new Ship(size) : new Ship(size).toggleOrientation(),
+      x,
+      y
+    );
     dom.renderSetupBoard(setupBoard)
   } catch (error) {
     dom.displayWarning(error)
@@ -35,6 +39,7 @@ function handleResetBoardEvent() {
 function handleStartGameEvent() {
   if (setupBoard.getShips().length !== 10) {
     dom.displayWarning('Not all ships have been placed')
+    return;
   }
 
   //some logic to start game
@@ -45,7 +50,7 @@ PubSub.subscribe('placeShipRandomly', handlePlaceShipRandomlyEvent)
 PubSub.subscribe('resetBoard', handleResetBoardEvent)
 PubSub.subscribe('startGame', handleStartGameEvent)
 
-
+//!add ability to move ships when they already placed on the setup board
 // change name of functions and variables from shipPlacement to shipOrintation
 // let gameboard = new Gameboard() //use its build-in method to notify a user about out of bound placement of a ship or across other ships
 // make ships rotatable on setup

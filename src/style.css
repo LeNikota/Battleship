@@ -16,6 +16,7 @@
   --border-ship-selected:rgb(17, 235, 71);
   --bg-ship-selected:rgba(0, 255, 64, .05);
   --dialog-bg: #00000050;
+  --button: rgb(220, 220, 255);
 }
 
 body{
@@ -39,6 +40,14 @@ h2{
 
 img {
   height: 30px;
+}
+
+button:hover{
+  filter:opacity(0.9);
+}
+
+button:active{
+  filter: opacity(0.7);
 }
 
 main{
@@ -117,15 +126,38 @@ main{
   margin-bottom: 1rem;
 }
 
+.dialog-window__sidebar{
+  display: grid;
+  align-content: space-between;
+}
+
+.setup-button-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  height: 150px;
+}
+
+.setup-button-container button{
+  background: var(--button);
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+  font-size: 1.25rem;
+	cursor: pointer;
+	outline: inherit;
+  transition: filter ease 0.2s;
+}
+
 .game-setup{
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 1rem;
 }
 
 .ship-selection{
-  min-width: 240px;
+  min-width: 250px;
 }
 
 .ship-selection-option{
@@ -146,6 +178,24 @@ main{
   background-color: var(--bg-ship);
   border: 3px solid var(--border-ship);
   cursor: pointer;
+}
+
+/* Ship selection rotated */
+.ship-selection.rotated {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ship-selection.rotated .ship-selection-option{
+  grid-template-columns: 1fr;
+  grid-template-rows: 30px 1fr;
+  align-items: flex-start;
+}
+
+.ship-selection.rotated .ship-selection-option div {
+  width: 50px;
+  height: calc(50px * var(--size));
 }
 
 /* Warning */
