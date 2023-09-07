@@ -33,9 +33,17 @@ export default class Player {
   getBoard(){
     return this.#board;
   }
+
+  setBoard(board){
+    return this.#board = board;
+  }
   
   getBoardTiles(){
     return this.#board.getTiles()
+  }
+
+  checkWin(){
+    return this.#opponent.getBoard().checkAllShipsSunk()
   }
 
   randomAttackOpponent(){ // later: make ai smarter by if it hits a ship check adjacent tiles

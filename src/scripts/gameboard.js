@@ -51,6 +51,7 @@ export default class Gameboard {
     }
 
     this.#ships.push({ship, x, y})
+    return this;
   }
 
   placeShipsRandomly(Ship) {
@@ -81,6 +82,7 @@ export default class Gameboard {
         }
       }
     }
+    return this;
   }
 
   reset(){

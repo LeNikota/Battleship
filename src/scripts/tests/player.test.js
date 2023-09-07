@@ -1,7 +1,27 @@
 import Player from '../player.js'
 import Gameboard from '../gameboard'
+import Ship from '../ship.js'
 
 describe('a player', () => {
+  it('should check if the player wins', () => {
+    const player1 = new Player(new Gameboard().placeShip(new Ship(1), 0, 0).placeShip(new Ship(2), 0, 1));
+    const player2 = new Player(new Gameboard().placeShip(new Ship(3), 0, 0));
+    player1.setOpponent(player2);
+    player2.setOpponent(player1);
+
+    player1.attackOpponent(0, 0)
+    player2.attackOpponent(0, 0)
+    expect(player1.checkWin()).toBeFalsy();
+    expect(player2.checkWin()).toBeFalsy();
+    
+    player1.attackOpponent(0, 1)
+    player2.attackOpponent(0, 1)
+    player1.attackOpponent(0, 2)
+    expect(player1.checkWin()).toBeTruthy();
+    player2.attackOpponent(0, 2)
+    expect(player2.checkWin()).toBeTruthy();
+  });
+
   it('should attack another player', () => {
     const player1 = new Player(new Gameboard());
     const player2 = new Player(new Gameboard());
@@ -48,46 +68,46 @@ describe('an AI player', () => { // later: make ai smarter by if it hits a ship 
   
   it('should attack a random tile', () => {
     const player = new Player(new Gameboard());
-    const aiPlayer = new Player(new Gameboard());
+    const ai = new Player(new Gameboard());
 
-    player.setOpponent(aiPlayer);
-    aiPlayer.setOpponent(player);
+    player.setOpponent(ai);
+    ai.setOpponent(player);
 
     const playerBoardTilesAfterAttack = player.getBoardTiles() 
     playerBoardTilesAfterAttack[0][1] = {hit: true}
 
-    aiPlayer.randomAttackOpponent();
-    expect(() => aiPlayer.randomAttackOpponent()).toThrow();
+    ai.randomAttackOpponent();
+    expect(() => ai.randomAttackOpponent()).toThrow();
     expect(player.getBoardTiles()).toEqual(playerBoardTilesAfterAttack)
   })
 
   it('should take turns with another player', () => {
     const player = new Player(new Gameboard());
-    const aiPlayer = new Player(new Gameboard());
+    const ai = new Player(new Gameboard());
 
-    player.setOpponent(aiPlayer);
-    aiPlayer.setOpponent(player);
+    player.setOpponent(ai);
+    ai.setOpponent(player);
 
-    aiPlayer.randomAttackOpponent();
-    expect(() => aiPlayer.randomAttackOpponent()).toThrow();
+    ai.randomAttackOpponent();
+    expect(() => ai.randomAttackOpponent()).toThrow();
     player.attackOpponent(0,0);
-    aiPlayer.randomAttackOpponent();
+    ai.randomAttackOpponent();
   })
 
   it('should not randomly attack the same tile twice', () => {
     const player = new Player(new Gameboard());
-    const aiPlayer = new Player(new Gameboard());
+    const ai = new Player(new Gameboard());
 
-    player.setOpponent(aiPlayer);
-    aiPlayer.setOpponent(player);
+    player.setOpponent(ai);
+    ai.setOpponent(player);
 
     const playerBoardTilesAfterAttack = player.getBoardTiles() 
     playerBoardTilesAfterAttack[0][0] = {hit: true}
     playerBoardTilesAfterAttack[0][1] = {hit: true}
 
-    aiPlayer.randomAttackOpponent();
+    ai.randomAttackOpponent();
     player.attackOpponent(0, 0);
-    expect(() => aiPlayer.randomAttackOpponent()).not.toThrow(); 
+    expect(() => ai.randomAttackOpponent()).not.toThrow(); 
     expect(player.getBoardTiles()).toEqual(playerBoardTilesAfterAttack);
   })
 });
