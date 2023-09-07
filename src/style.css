@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&family=Big+Shoulders+Stencil+Text:wght@700&display=swap');
-
 :root{
   box-sizing: border-box;
   font-family: 'Barlow', sans-serif;
@@ -9,13 +8,15 @@
   --tertiary: #30475E;
   --text: #1D242B;
   --border: #160F30;
-  --border-inner: #160f3069;
+  --border-inner: #160f3017;
   --border-ship:#00f;
-  --bg-ship:rgba(0,0,255,.05);
-  --border-ship-sunk:rgb(219, 56, 56);
-  --bg-ship-sunk:rgba(219, 56, 56, .05);
+  --bg-ship:rgba(0,0,255,.1);
+  --border-ship-sunk:#00f;
+  --bg-ship-sunk:#EB455F;
   --border-ship-selected:rgb(17, 235, 71);
   --bg-ship-selected:rgba(0, 255, 64, .05);
+  --tile-hit:#EB455F;
+  --tile-hit-water:#5287ff;
   --dialog-bg: #00000050;
   --button: rgb(220, 220, 255);
 }
@@ -81,6 +82,14 @@ main{
   border-bottom: none;
 }
 
+.board__tile.water{
+  background-color: var(--tile-hit-water);
+}
+
+.board__tile.hit{
+  background-color: var(--tile-hit);
+}
+
 .board.player{
   cursor: not-allowed;
 }
@@ -99,10 +108,11 @@ main{
   pointer-events: none;
 }
 
-.hit{
+.ship.hit{
   background-color: var(--bg-ship-sunk) !important;
   border: 3px solid var(--border-ship-sunk) !important;
 }
+
 
 .selected{
   background-color: var(--bg-ship-selected) !important;

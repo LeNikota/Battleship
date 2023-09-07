@@ -39,13 +39,32 @@ function fillBoardsWithTiles() {
   });
 }
 
-function createShip(board, size = 1, isHorizontal = true, x = 0, y = 0) {
+function renderTiles(board, boardTiles) {
+  for (let x = 0; x < 10; x++) {
+    for (let y = 0; y < 10; y++) {
+      const tile = document.createElement('div');
+      tile.classList.add('board__tile')
+      if(boardTiles[x][y].hit)
+        tile.classList.add('water')
+      if(boardTiles[x][y].hit && boardTiles[x][y].ship)
+        tile.classList.add('hit')
+      tile.dataset.x = x;
+      tile.dataset.y = y;
+      board.appendChild(tile)
+    }
+  }
+}
+
+function createShip(board, size = 1, isHorizontal = true, isSunk = false, x = 0, y = 0) {
   const ship = document.createElement('div');
   ship.className = 'ship';
   if (isHorizontal) {
     ship.style.width = `${50 * size}px`
   } else {
     ship.style.height = `${50 * size}px`
+  }
+  if (isSunk){
+    ship.classList.add('hit')
   }
   ship.style.top = `${50 * x - 3}px`
   ship.style.left = `${50 * y - 3}px`
@@ -97,11 +116,14 @@ function setupBoardElClick({ target }) {
 }
 
 function enemyBoardElClick({ target }) {
-  if (!selectedShipEl || target.className !== 'board__tile') {
+  if (target.className !== 'board__tile') {
     return;
   }
 
-  PubSub.publish('enemyBoardClick', target)
+  const x = +target.dataset.x;
+  const y = +target.dataset.y;
+
+  PubSub.publish('enemyBoardClick', {x, y})
 }
 
 function setupButtonContainerElClick({ target }) {
@@ -121,8 +143,16 @@ function setupButtonContainerElClick({ target }) {
   }
 }
 
-function clearBoard(type) {
+function clearBoard(type, clearTiles = false) {
   const boardEl = BOARD_TYPES[type]
+
+  if(clearTiles){
+    while (boardEl.firstChild) {
+      boardEl.removeChild(boardEl.lastChild);
+    }
+    return;
+  }
+
   boardEl.querySelectorAll('.ship').forEach(ship => ship.remove())
 }
 
@@ -154,7 +184,6 @@ function resetShipSelectionEl() {
 }
 
 function updateSetupWindow(board) {
-  clearBoard('setup')
   renderBoard('setup', board)
 
   if(board.getShips().length === 10){
@@ -179,12 +208,19 @@ function updateSetupWindow(board) {
   }
 }
 
-function renderBoard(type, board) {
+function renderBoard(type, board, rerenderTiles = false, renderShips = true) {
+  clearBoard(type, rerenderTiles)
   const boardEl = BOARD_TYPES[type]
 
-  board.getShips().forEach(({ ship, x, y }) => {
-    createShip(boardEl, ship.getLength(), ship.getOrientation(), x, y);
+  if(rerenderTiles){
+    renderTiles(boardEl, board.getTiles())
+  }
+  
+  if(renderShips){
+    board.getShips().forEach(({ ship, x, y }) => {
+      createShip(boardEl, ship.getLength(), ship.getOrientation(), ship.isSunk(), x, y);
   });
+  }
 }
 
 function toggleDialogWindow() {
