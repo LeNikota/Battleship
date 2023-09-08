@@ -19,6 +19,8 @@
   --tile-hit-water:#5287ff;
   --dialog-bg: #00000050;
   --button: rgb(220, 220, 255);
+  --border-warning: #EB455F;
+  --border-notification: #273dff;
 }
 
 body{
@@ -219,9 +221,9 @@ main{
 
 /* Warning */
 
-.warning{
+.message{
   background-color: var(--primary);
-  border: #F05454 4px solid;
+  border: var(--border) 4px solid;
   border-radius: 4px;
   position: fixed;
   top: 120vh;
@@ -235,11 +237,19 @@ main{
   pointer-events: none;
 }
 
-.warning img{
+.message img{
   height: 50px;
 }
 
-.warning-message{
+.message__text{
   font-size: 1.5rem;
   font-weight: 500;
+}
+
+.message.warning {
+  border-color: var(--border-warning);
+}
+
+.message.notification {
+  border-color: var(--border-notification);
 }

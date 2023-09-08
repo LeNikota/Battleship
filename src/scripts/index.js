@@ -10,6 +10,8 @@ dom.init()
 const playerBoard = new Gameboard();
 let player = new Player();
 let ai = new Player();
+player.setOpponent(ai)
+ai.setOpponent(player)
 
 
 function handleSetUpBoardClick({size, isHorizontal, x, y}) {
@@ -21,7 +23,7 @@ function handleSetUpBoardClick({size, isHorizontal, x, y}) {
     );
     dom.updateSetupWindow(playerBoard)
   } catch (error) {
-    dom.displayWarning(error)
+    dom.displayMessage(error)
   }
 }
 
@@ -30,18 +32,18 @@ function handleEnemyBoardClick({x, y}) {
     player.attackOpponent(x, y)
     dom.renderBoard('enemy', ai.getBoard(), true, false)
     if(player.checkWin()){
-      handleEndGameEvent()
+      handleEndGameEvent(true)
       return;
     }
     
     ai.randomAttackOpponent()
     dom.renderBoard('player', player.getBoard(), true)
     if(ai.checkWin()){
-      handleEndGameEvent()
+      handleEndGameEvent(false)
       return;
     }
   } catch (error) {
-    dom.displayWarning(error);
+    dom.displayMessage(error);
   }
 }
 
@@ -50,7 +52,7 @@ function handlePlaceShipRandomlyEvent() {
     playerBoard.placeShipsRandomly(Ship);
     dom.updateSetupWindow(playerBoard);
   } catch (error) {
-    dom.displayWarning(error)
+    dom.displayMessage(error)
   }
 }
 
@@ -61,20 +63,37 @@ function handleResetBoardEvent() {
 
 function handleStartGameEvent() {
   if (playerBoard.getShips().length !== 10) {
-    dom.displayWarning('Not all ships have been placed')
+    dom.displayMessage('Not all ships have been placed')
     return;
   }
   player.setBoard(playerBoard)
-  player.setOpponent(ai)
+  player.setTurn(true);
   ai.setBoard(new Gameboard().placeShipsRandomly(Ship))
-  ai.setOpponent(player)
+  
   dom.toggleDialogWindow()
   dom.renderBoard('player', playerBoard)
 }
 
-function handleEndGameEvent() {
-  console.log('you won');
-  //todo logic goes here
+function handleEndGameEvent(win) {
+  dom.pointerEvents(false)
+
+  const message = win ? 'You win' : 'You lose' 
+  let countdown = 9;
+  
+  dom.displayMessage(message, 'notification')
+
+  let countdownIntervalId = setInterval(() => {
+    dom.displayMessage(`${message}, new game in ${countdown--} seconds`, 'notification')
+  }, 1000)
+
+  setTimeout(() => {
+    clearInterval(countdownIntervalId)
+    dom.displayMessage('Starting new game...', 'notification', 1000)
+    playerBoard.reset()
+    dom.resetBoards()
+    dom.toggleDialogWindow()
+    dom.pointerEvents(true)
+  }, 10000)
 }
 
 PubSub.subscribe('setupBoardClick', handleSetUpBoardClick)
@@ -90,3 +109,5 @@ PubSub.subscribe('startGame', handleStartGameEvent)
 // todo make AI smarter
 // todo add menu so a player can save a game and restart (use dialog window)
 // todo use localStorage so when player exit he can continue playing? (or go to menu and saves the game in its state) - not necessary
+
+// todo When everything complete test the game (all functionality (if saves are added, quitting in the middle of the game, closing the tab) winning, losing many times then (again quitting, saving)); if there will be time check how others achieve the result

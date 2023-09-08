@@ -7,7 +7,7 @@ const enemyBoardEl = document.querySelector('.enemy.board')
 const boards = document.querySelectorAll('.board')
 const shipSelectionEl = document.querySelector('.ship-selection')
 const setupButtonContainerEl = document.querySelector('.setup-button-container')
-const warningEl = document.querySelector('.warning')
+const messageEl = document.querySelector('.message')
 
 const SHIP_SIZES_LIST = {
   large: 4,
@@ -22,7 +22,7 @@ const BOARD_TYPES = {
 }
 let selectedShipEl = null
 let isHorizontal = true
-let warningTimeoutID = null
+let messageTimeoutID = null
 
 
 function fillBoardsWithTiles() {
@@ -37,6 +37,14 @@ function fillBoardsWithTiles() {
       }
     }
   });
+}
+
+function resetBoards() {
+  clearBoard('setup', true)
+  clearBoard('player', true)
+  clearBoard('enemy', true)
+  fillBoardsWithTiles()
+  resetShipSelectionEl()
 }
 
 function renderTiles(board, boardTiles) {
@@ -89,6 +97,11 @@ function deselectShip() {
 function toggleShipOrientation() {
   isHorizontal = !isHorizontal;
   shipSelectionEl.classList.toggle('rotated');
+}
+
+function pointerEvents(enable = true) {
+  const html = document.documentElement;
+  html.style.pointerEvents = enable ? 'auto' : 'none'
 }
 
 function shipSelectionElClick({ target }) {
@@ -228,11 +241,14 @@ function toggleDialogWindow() {
     dialogEl.style.display === "none" ? "flex" : "none";
 }
 
-function displayWarning(message) {
-  clearTimeout(warningTimeoutID)
-  warningEl.lastElementChild.textContent = message;
-  warningEl.style.top = '80vh';
-  warningTimeoutID  = setTimeout(() => warningEl.style.top = '120vh', 2000);
+function displayMessage(message, type = 'warning', timer = 2000) {
+  clearTimeout(messageTimeoutID)
+  messageEl.classList.remove('warning', 'notification');
+  messageEl.classList.add(type);
+  messageEl.firstElementChild.src = `${type}.svg`
+  messageEl.lastElementChild.textContent = message;
+  messageEl.style.top = '80vh';
+  messageTimeoutID  = setTimeout(() => messageEl.style.top = '120vh', timer);
 }
 
 function init() {
@@ -243,4 +259,4 @@ function init() {
   setupButtonContainerEl.addEventListener('click', setupButtonContainerElClick)
 }
 
-export { init, updateSetupWindow, renderBoard, displayWarning, toggleDialogWindow }
+export { init, resetBoards, updateSetupWindow, renderBoard, displayMessage, toggleDialogWindow, pointerEvents }
