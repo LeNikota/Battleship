@@ -56,13 +56,33 @@ describe('gameboard', () => {
     expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 6,9)).not.toThrow();
   });
 
-  it('should prevent placing a ship near or across a placed ship', () => {
+  it('should prevent placing a ship across a placed ship', () => {
     gameboard.placeShip(new Ship(4), 3,3)
     expect(() => gameboard.placeShip(new Ship(4), 3,0)).toThrow();
     expect(() => gameboard.placeShip(new Ship(4), 3,3)).toThrow();
     expect(() => gameboard.placeShip(new Ship(4), 3,4)).toThrow();
     expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 2,4)).toThrow();
     expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 0,5)).toThrow();
+  });
+
+  it('should prevent placing a ship near a placed ship', () => {
+    gameboard.placeShip(new Ship(3), 0,0)
+    gameboard.placeShip(new Ship(3), 9,7)
+    gameboard.placeShip(new Ship(3), 5,5)
+    expect(() => gameboard.placeShip(new Ship(3), 4,5)).toThrow();
+    expect(() => gameboard.placeShip(new Ship(3), 6,5)).toThrow();
+    expect(() => gameboard.placeShip(new Ship(2), 5,3)).toThrow();
+    expect(() => gameboard.placeShip(new Ship(2), 5,8)).toThrow();
+    
+    gameboard.reset()
+
+    gameboard.placeShip(new Ship(3).toggleOrientation(), 0,0)
+    gameboard.placeShip(new Ship(3).toggleOrientation(), 7,9)
+    gameboard.placeShip(new Ship(3).toggleOrientation(), 5,5)
+    expect(() => gameboard.placeShip(new Ship(2).toggleOrientation(), 3,5)).toThrow(); 
+    expect(() => gameboard.placeShip(new Ship(3).toggleOrientation(), 5,4)).toThrow(); 
+    expect(() => gameboard.placeShip(new Ship(3).toggleOrientation(), 5,6)).toThrow(); 
+    expect(() => gameboard.placeShip(new Ship(2).toggleOrientation(), 8,5)).toThrow();
   });
 
   it('should receive attacks', () => {

@@ -11,20 +11,33 @@ export default class Gameboard {
     return !(x < 0 || y < 0 || x > 9 || y > 9)
   }
 
-  checkPlacementValidity(x, y ,length, isHorizontal){
-    if(isHorizontal){
-      for (let i = y; i <= y + length; i++) {
-        if('ship' in this.#tiles[x][i])
-          return false;
-      }
+  checkPlacementValidity(x, y, length, isHorizontal) {
+    const tilesToCheck = [];
+  
+    if (isHorizontal) {
+      const yOffsetLeft = (y === 0) ? 0 : -1;
+      const yOffsetRight = (y === 9) ? 1 : 2;
+  
+      if (x !== 0)
+        tilesToCheck.push(...this.#tiles[x - 1].slice(y + yOffsetLeft, y + length + yOffsetRight));
+      tilesToCheck.push(...this.#tiles[x].slice(y + yOffsetLeft, y + length + yOffsetRight));
+      if (x !== 9)
+        tilesToCheck.push(...this.#tiles[x + 1].slice(y + yOffsetLeft, y + length + yOffsetRight));
+  
     } else {
-      for (let i = x; i <= x + length; i++) {
-        if('ship' in this.#tiles[i][y])
-          return false;
+      const xOffsetTop = (x === 0) ? 0 : -1;
+      const xOffsetBottom = (x === 9 - length) ? 0 : 1;
+  
+      for (let i = x + xOffsetTop; i <= x + length + xOffsetBottom; i++) {
+        if (y !== 0)
+          tilesToCheck.push(this.#tiles[i][y - 1]);
+        tilesToCheck.push(this.#tiles[i][y]);
+        if (y !== 9)
+          tilesToCheck.push(this.#tiles[i][y + 1]);
       }
     }
-    
-    return true;
+  
+    return !tilesToCheck.some((tile) => "ship" in tile);
   }
 
   placeShip(ship, x, y){

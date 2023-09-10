@@ -4,7 +4,7 @@ import Ship from '../ship.js'
 
 describe('a player', () => {
   it('should check if the player wins', () => {
-    const player1 = new Player(new Gameboard().placeShip(new Ship(1), 0, 0).placeShip(new Ship(2), 0, 1));
+    const player1 = new Player(new Gameboard().placeShip(new Ship(1), 0, 0).placeShip(new Ship(2), 2, 0));
     const player2 = new Player(new Gameboard().placeShip(new Ship(3), 0, 0));
     player1.setOpponent(player2);
     player2.setOpponent(player1);
@@ -15,10 +15,10 @@ describe('a player', () => {
     expect(player2.checkWin()).toBeFalsy();
     
     player1.attackOpponent(0, 1)
-    player2.attackOpponent(0, 1)
+    player2.attackOpponent(2, 0)
     player1.attackOpponent(0, 2)
     expect(player1.checkWin()).toBeTruthy();
-    player2.attackOpponent(0, 2)
+    player2.attackOpponent(2, 1)
     expect(player2.checkWin()).toBeTruthy();
   });
 
