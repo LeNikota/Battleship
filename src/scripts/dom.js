@@ -1,4 +1,6 @@
 import PubSub from "./pubsub"
+import notificationImg from '../notification.svg'
+import warningImg from '../warning.svg';
 
 const dialogEl = document.querySelector('.dialog')
 const setupBoardEl = document.querySelector('.setup.board')
@@ -19,6 +21,10 @@ const BOARD_TYPES = {
   setup: setupBoardEl,
   player: playerBoardEl,
   enemy: enemyBoardEl
+}
+const IMAGES_LIST = {
+  notification: notificationImg,
+  warning: warningImg
 }
 let selectedShipEl = null
 let isHorizontal = true
@@ -245,7 +251,7 @@ function displayMessage(message, type = 'warning', timer = 2000) {
   clearTimeout(messageTimeoutID)
   messageEl.classList.remove('warning', 'notification');
   messageEl.classList.add(type);
-  messageEl.firstElementChild.src = `${type}.svg`
+  messageEl.firstElementChild.src = IMAGES_LIST[type];
   messageEl.lastElementChild.textContent = message;
   messageEl.style.top = '80vh';
   messageTimeoutID  = setTimeout(() => messageEl.style.top = '120vh', timer);
