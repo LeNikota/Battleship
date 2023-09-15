@@ -7,7 +7,7 @@ export default class Gameboard {
     this.#ships = [];
   }
 
-  static checkTileValidity(x, y){
+  checkTileValidity(x, y){
     return !(x < 0 || y < 0 || x > 9 || y > 9)
   }
 
@@ -44,9 +44,9 @@ export default class Gameboard {
     const length = (ship.getLength() - 1);
     const isHorizontal = ship.getOrientation();
 
-    if(isHorizontal && (!Gameboard.checkTileValidity(x, y) || y + length >= 10))
+    if(isHorizontal && (!this.checkTileValidity(x, y) || y + length >= 10))
       throw('Placement is out of bounds')
-    if(!isHorizontal && (!Gameboard.checkTileValidity(x, y) || x + length >= 10))
+    if(!isHorizontal && (!this.checkTileValidity(x, y) || x + length >= 10))
       throw('Placement is out of bounds')
     if(!this.checkPlacementValidity(x, y, length, isHorizontal))
       throw('Placing near or across already placed ship')
@@ -104,7 +104,7 @@ export default class Gameboard {
   }
 
   receiveAttack(x, y){
-    if(!Gameboard.checkTileValidity(x, y))
+    if(!this.checkTileValidity(x, y))
       throw('The tile is out of bounds')
 
     const tile = this.#tiles[x][y];

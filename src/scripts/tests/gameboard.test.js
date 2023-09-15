@@ -8,13 +8,13 @@ describe('gameboard', () => {
   })
 
   it('should check is a tile valid', () => {
-    expect(Gameboard.checkTileValidity(0,-1)).toBeFalsy()
-    expect(Gameboard.checkTileValidity(-1,0)).toBeFalsy()
-    expect(Gameboard.checkTileValidity(-1,-1)).toBeFalsy()
-    expect(Gameboard.checkTileValidity(9,10)).toBeFalsy()
-    expect(Gameboard.checkTileValidity(10,9)).toBeFalsy()
-    expect(Gameboard.checkTileValidity(10,10)).toBeFalsy()
-    expect(Gameboard.checkTileValidity(5,5)).toBeTruthy()
+    expect(gameboard.checkTileValidity(0,-1)).toBeFalsy()
+    expect(gameboard.checkTileValidity(-1,0)).toBeFalsy()
+    expect(gameboard.checkTileValidity(-1,-1)).toBeFalsy()
+    expect(gameboard.checkTileValidity(9,10)).toBeFalsy()
+    expect(gameboard.checkTileValidity(10,9)).toBeFalsy()
+    expect(gameboard.checkTileValidity(10,10)).toBeFalsy()
+    expect(gameboard.checkTileValidity(5,5)).toBeTruthy()
   });
 
   it('should place a ship', () => {

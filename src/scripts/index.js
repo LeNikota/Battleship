@@ -103,13 +103,15 @@ PubSub.subscribe('resetBoard', handleResetBoardEvent)
 PubSub.subscribe('startGame', handleStartGameEvent)
 
 // todo complete this project already there's no time left! university awaits! and english learning too
+// todo remove the turn mechanic in the player class players
 //! may be revert colors, primary black and others more light (color palette site), i thing it will fix the isuee, try right away chaning in the broswer pane those varables
 //!add ability to move ships when they already placed on the setup board
 //!check how site looks on mobile
+// todo fix notification area CSS
 // todo make tiles around destroyed ship become visible (water) (as there is no need to hide them)
-// todo make AI smarter
 // todo add menu so a player can save a game and restart (use dialog window)
 // todo use localStorage so when player exit he can continue playing? (or go to menu and saves the game in its state) - not necessary
+
 
 // todo when everything is complete use pritter in some places to make code look consistent
 // ? ask CHATGPT can i improve something or write in a more clear way, add and commit as an optimization 
