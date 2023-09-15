@@ -67,7 +67,6 @@ function handleStartGameEvent() {
     return;
   }
   player.setBoard(playerBoard)
-  player.setTurn(true);
   ai.setBoard(new Gameboard().placeShipsRandomly(Ship))
   
   dom.toggleDialogWindow()
@@ -103,7 +102,6 @@ PubSub.subscribe('resetBoard', handleResetBoardEvent)
 PubSub.subscribe('startGame', handleStartGameEvent)
 
 // todo complete this project already there's no time left! university awaits! and english learning too
-// todo remove the turn mechanic in the player class players
 //! may be revert colors, primary black and others more light (color palette site), i thing it will fix the isuee, try right away chaning in the broswer pane those varables
 //!add ability to move ships when they already placed on the setup board
 //!check how site looks on mobile

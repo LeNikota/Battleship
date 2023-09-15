@@ -1,13 +1,11 @@
 export default class Player {
   #board;
-  #turn;
   #opponent;
   #shipCords
   #adjacentTiles
 
   constructor(board, opponent = null) {
     this.#board = board;
-    this.#turn = true;
     this.#opponent = opponent;
 
     /* AI properties for randomAttackOpponent */
@@ -21,19 +19,10 @@ export default class Player {
   }
 
   attackOpponent(x, y){
-    if(!this.#turn)
-      throw('Not your turn')
-    
     const opponentBoard = this.#opponent.getBoard()
     opponentBoard.receiveAttack(x, y)
-    this.#turn = false;
-    this.#opponent.setTurn(true);
   }
 
-  setTurn(isMyTurn){
-    this.#turn = isMyTurn;
-  }
-  
   setOpponent(opponent){
     if(opponent === this)
       throw('Setting yourself as an opponent')
@@ -58,9 +47,6 @@ export default class Player {
   }
 
   randomAttackOpponent() {
-    if (!this.#turn)
-      throw ('Not your turn')
-  
     const opponentBoard = this.#opponent.getBoard();
     const opponentBoardTiles = opponentBoard.getTiles();
     const intactTilesCords = []
@@ -104,8 +90,6 @@ export default class Player {
     }
   
     opponentBoard.receiveAttack(...attackCords)
-    this.#turn = false;
-    this.#opponent.setTurn(true);
   
     const tile = opponentBoard.getTile(...attackCords)
     if (!tile.ship) {

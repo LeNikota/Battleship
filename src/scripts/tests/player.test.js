@@ -39,19 +39,6 @@ describe('a player', () => {
     expect(player1.getBoardTiles()).toEqual(player2BoardTilesAfterAttack)
   });
 
-  it('should take turns with another player', () => {
-    const player1 = new Player(new Gameboard());
-    const player2 = new Player(new Gameboard());
-    player1.setOpponent(player2);
-    player2.setOpponent(player1);
-    player1.attackOpponent(0, 0)
-    expect(() => player1.attack(1, 1)).toThrow()
-    player2.attackOpponent(0, 0)
-    expect(() => player2.attack(0, 0)).toThrow()
-    player1.attackOpponent(1, 1)
-    expect(() => player1.attack(2, 2)).toThrow()
-  });
-
   it('should not allow setting youself as an opponent', () => {
     const player1 = new Player(new Gameboard());
     expect(()=> player1.setOpponent(player1)).toThrow()
@@ -77,21 +64,7 @@ describe('an AI player', () => { // later: make ai smarter by if it hits a ship 
     playerBoardTilesAfterAttack[0][1] = {hit: true}
 
     ai.randomAttackOpponent();
-    expect(() => ai.randomAttackOpponent()).toThrow();
     expect(player.getBoardTiles()).toEqual(playerBoardTilesAfterAttack)
-  })
-
-  it('should take turns with another player', () => {
-    const player = new Player(new Gameboard());
-    const ai = new Player(new Gameboard());
-
-    player.setOpponent(ai);
-    ai.setOpponent(player);
-
-    ai.randomAttackOpponent();
-    expect(() => ai.randomAttackOpponent()).toThrow();
-    player.attackOpponent(0,0);
-    ai.randomAttackOpponent();
   })
 
   it('should not randomly attack the same tile twice', () => {
