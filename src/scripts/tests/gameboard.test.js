@@ -44,45 +44,45 @@ describe('gameboard', () => {
   });
 
   it('should prevent placing a ship beyond the gameboard boundaries', () => {
-    expect(() => gameboard.placeShip(new Ship(1), 0,-1)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(1), -1,0)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(1), -1,-1)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(1), 10,9)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(1), 9,10)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(1), 10,10)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(4), 8,8)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(4), 0,6)).not.toThrow();
-    expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 8,9)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 6,9)).not.toThrow();
+    expect(() => gameboard.placeShip(new Ship(1), 0,-1)).toThrow('Placement is out of bounds');
+    expect(() => gameboard.placeShip(new Ship(1), -1,0)).toThrow('Placement is out of bounds');
+    expect(() => gameboard.placeShip(new Ship(1), -1,-1)).toThrow('Placement is out of bounds');
+    expect(() => gameboard.placeShip(new Ship(1), 10,9)).toThrow('Placement is out of bounds');
+    expect(() => gameboard.placeShip(new Ship(1), 9,10)).toThrow('Placement is out of bounds');
+    expect(() => gameboard.placeShip(new Ship(1), 10,10)).toThrow('Placement is out of bounds');
+    expect(() => gameboard.placeShip(new Ship(4), 8,8)).toThrow('Placement is out of bounds');
+    expect(() => gameboard.placeShip(new Ship(4), 0,6)).not.toThrow('Placement is out of bounds');
+    expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 8,9)).toThrow('Placement is out of bounds');
+    expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 6,9)).not.toThrow('Placement is out of bounds');
   });
 
   it('should prevent placing a ship across a placed ship', () => {
     gameboard.placeShip(new Ship(4), 3,3)
-    expect(() => gameboard.placeShip(new Ship(4), 3,0)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(4), 3,3)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(4), 3,4)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 2,4)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 0,5)).toThrow();
+    expect(() => gameboard.placeShip(new Ship(4), 3,0)).toThrow('Placing near or across already placed ship');
+    expect(() => gameboard.placeShip(new Ship(4), 3,3)).toThrow('Placing near or across already placed ship');
+    expect(() => gameboard.placeShip(new Ship(4), 3,4)).toThrow('Placing near or across already placed ship');
+    expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 2,4)).toThrow('Placing near or across already placed ship');
+    expect(() => gameboard.placeShip(new Ship(4).toggleOrientation(), 0,5)).toThrow('Placing near or across already placed ship');
   });
 
   it('should prevent placing a ship near a placed ship', () => {
     gameboard.placeShip(new Ship(3), 0,0)
     gameboard.placeShip(new Ship(3), 9,7)
     gameboard.placeShip(new Ship(3), 5,5)
-    expect(() => gameboard.placeShip(new Ship(3), 4,5)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(3), 6,5)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(2), 5,3)).toThrow();
-    expect(() => gameboard.placeShip(new Ship(2), 5,8)).toThrow();
+    expect(() => gameboard.placeShip(new Ship(3), 4,5)).toThrow('Placing near or across already placed ship');
+    expect(() => gameboard.placeShip(new Ship(3), 6,5)).toThrow('Placing near or across already placed ship');
+    expect(() => gameboard.placeShip(new Ship(2), 5,3)).toThrow('Placing near or across already placed ship');
+    expect(() => gameboard.placeShip(new Ship(2), 5,8)).toThrow('Placing near or across already placed ship');
     
     gameboard.reset()
 
     gameboard.placeShip(new Ship(3).toggleOrientation(), 0,0)
     gameboard.placeShip(new Ship(3).toggleOrientation(), 7,9)
     gameboard.placeShip(new Ship(3).toggleOrientation(), 5,5)
-    expect(() => gameboard.placeShip(new Ship(2).toggleOrientation(), 3,5)).toThrow(); 
-    expect(() => gameboard.placeShip(new Ship(3).toggleOrientation(), 5,4)).toThrow(); 
-    expect(() => gameboard.placeShip(new Ship(3).toggleOrientation(), 5,6)).toThrow(); 
-    expect(() => gameboard.placeShip(new Ship(2).toggleOrientation(), 8,5)).toThrow();
+    expect(() => gameboard.placeShip(new Ship(2).toggleOrientation(), 3,5)).toThrow('Placing near or across already placed ship'); 
+    expect(() => gameboard.placeShip(new Ship(3).toggleOrientation(), 5,4)).toThrow('Placing near or across already placed ship'); 
+    expect(() => gameboard.placeShip(new Ship(3).toggleOrientation(), 5,6)).toThrow('Placing near or across already placed ship'); 
+    expect(() => gameboard.placeShip(new Ship(2).toggleOrientation(), 8,5)).toThrow('Placing near or across already placed ship');
   });
 
   it('should receive attacks', () => {
@@ -97,7 +97,7 @@ describe('gameboard', () => {
 
   it('should prevent attacking the same tile twice', () => {
     gameboard.receiveAttack(5,5)
-    expect(() => gameboard.receiveAttack(5,5)).toThrow()
+    expect(() => gameboard.receiveAttack(5,5)).toThrow('The tile has been already hit')
   });
 
   it('should check if all ships are sunk', () => {
@@ -148,7 +148,7 @@ describe('gameboard', () => {
       expect(shipLengths).toEqual([4, 3, 3, 2, 2, 2, 1, 1, 1, 1]);
     });
 
-    it('should reset the gameboard and throw error if placement attempts exceed the limit', () => {
+    it('should reset the gameboard and throw an error if placement attempts exceed the limit', () => {
       jest.spyOn(Math, 'random').mockReturnValue(0);
 
       expect(() => gameboard.placeShipsRandomly()).toThrow();

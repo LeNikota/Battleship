@@ -41,11 +41,11 @@ describe('a player', () => {
 
   it('should not allow setting youself as an opponent', () => {
     const player1 = new Player(new Gameboard());
-    expect(()=> player1.setOpponent(player1)).toThrow()
+    expect(()=> player1.setOpponent(player1)).toThrow('Setting yourself as an opponent')
   });
 });
 
-describe('an AI player', () => { // later: make ai smarter by if it hits a ship check adjacent tiles
+describe('an AI player', () => {
   beforeAll(() => {
     jest.spyOn(Math, 'random').mockReturnValue(0.01)
   });
@@ -80,7 +80,7 @@ describe('an AI player', () => { // later: make ai smarter by if it hits a ship 
 
     ai.randomAttackOpponent();
     player.attackOpponent(0, 0);
-    expect(() => ai.randomAttackOpponent()).not.toThrow(); 
+    expect(() => ai.randomAttackOpponent()).not.toThrow();
     expect(player.getBoardTiles()).toEqual(playerBoardTilesAfterAttack);
   })
 });
