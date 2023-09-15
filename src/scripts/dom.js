@@ -253,7 +253,11 @@ function displayMessage(message, type = 'warning', timer = 2000) {
   messageEl.classList.add(type);
   messageEl.firstElementChild.src = IMAGES_LIST[type];
   messageEl.lastElementChild.textContent = message;
+  
+  const width = messageEl.firstElementChild.offsetWidth + messageEl.lastElementChild.offsetWidth + +getComputedStyle(messageEl, null).getPropertyValue('padding').match(/\d+/)[0]
+  messageEl.style.width = `${width}px`;
   messageEl.style.top = '80vh';
+  
   messageTimeoutID  = setTimeout(() => messageEl.style.top = '120vh', timer);
 }
 

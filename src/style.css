@@ -235,6 +235,9 @@ main{
   gap: 1rem;
   transition: ease 0.7s;
   pointer-events: none;
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .message img{
