@@ -226,8 +226,8 @@ main{
   border: var(--border) 4px solid;
   border-radius: 4px;
   position: fixed;
-  top: 120vh;
-  left: 50vw;
+  top: 140%; 
+  left: 50%;
   transform: translate(-50%, -50%);
   padding: 1rem;
   display: flex;

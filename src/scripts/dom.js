@@ -256,9 +256,9 @@ function displayMessage(message, type = 'warning', timer = 2000) {
   
   const width = messageEl.firstElementChild.offsetWidth + messageEl.lastElementChild.offsetWidth + +getComputedStyle(messageEl, null).getPropertyValue('padding').match(/\d+/)[0]
   messageEl.style.width = `${width}px`;
-  messageEl.style.top = '80vh';
+  messageEl.style.top = '80%';
   
-  messageTimeoutID  = setTimeout(() => messageEl.style.top = '120vh', timer);
+  messageTimeoutID  = setTimeout(() => messageEl.style.top = '140%', timer);
 }
 
 function init() {
