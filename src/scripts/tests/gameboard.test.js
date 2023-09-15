@@ -127,6 +127,29 @@ describe('gameboard', () => {
     expect(ships).toHaveLength(0);
   });
 
+  it('should give tiles around the provided ship', () => {
+    const ship1 = new Ship(4)
+    const ship2 = new Ship(1)
+    const ship3 = new Ship(4).toggleOrientation()
+    
+    gameboard.placeShip(ship1, 0, 0)
+    gameboard.placeShip(ship2, 9, 9)
+    gameboard.placeShip(ship3, 5, 5)
+
+    const allTiles = gameboard.getTiles()
+    const expectedShip1Tiles = [...allTiles[0].slice(0,5), ...allTiles[1].slice(0,5)]
+    const expectedShip2Tiles = [...allTiles[8].slice(8,10), ...allTiles[9].slice(8,10)]
+    const expectedShip3Tiles = []
+
+    for (let x = 4; x <= 9; x++) {
+      expectedShip3Tiles.push(allTiles[x][4], allTiles[x][5], allTiles[x][6])
+    }
+
+    expect(gameboard.getTilesAroundShip(ship1)).toStrictEqual(expectedShip1Tiles);
+    expect(gameboard.getTilesAroundShip(ship2)).toStrictEqual(expectedShip2Tiles);
+    expect(gameboard.getTilesAroundShip(ship3)).toStrictEqual(expectedShip3Tiles);
+  });
+
   describe('placeShipsRandomly', () => {
     it('should place ships randomly without errors', () => {
       expect(() => gameboard.placeShipsRandomly(Ship)).not.toThrow();

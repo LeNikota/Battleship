@@ -113,8 +113,16 @@ export default class Gameboard {
       throw('The tile has been already hit')
     
     tile.hit = true;
-    if(tile.ship){
-      tile.ship.hit()
+
+    if(!tile.ship)
+      return
+
+    const ship = tile.ship;
+    ship.hit()
+
+    if(ship.isSunk()){
+      const tilesAroundShip = this.getTilesAroundShip(ship)
+      tilesAroundShip.forEach(tile => tile.hit = true)
     }
   }
 
@@ -125,6 +133,38 @@ export default class Gameboard {
   getTiles(){
     return this.#tiles.map(row => row.map(tile => ({...tile})));
   }
+
+  getTilesAroundShip(ship) {
+    const tilesAroundShip = [];
+  
+    const { x, y } = this.#ships.find(({ ship: s }) => s === ship);
+  
+    if (!(typeof x === 'number' && typeof y === 'number')) 
+      throw 'Tiles around the ship have not been found'
+  
+    const isHorizontal = ship.getOrientation();
+    const shipLength = ship.getLength();
+  
+    if (isHorizontal) {
+      for (let i = x - 1; i <= x + 1; i++) {
+        for (let j = y - 1; j <= y + shipLength; j++) {
+          if (this.checkTileValidity(i, j)) {
+            tilesAroundShip.push(this.#tiles[i][j]);
+          }
+        }
+      }
+    } else {
+      for (let i = x - 1; i <= x + shipLength; i++) {
+        for (let j = y - 1; j <= y + 1; j++) {
+          if (this.checkTileValidity(i, j)) {
+            tilesAroundShip.push(this.#tiles[i][j]);
+          }
+        }
+      }
+    }
+  
+    return tilesAroundShip;
+  }  
 
   getShips(){
     return this.#ships;

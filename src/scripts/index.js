@@ -104,13 +104,19 @@ PubSub.subscribe('startGame', handleStartGameEvent)
 // todo complete this project already there's no time left! university awaits! and english learning too
 //! may be revert colors, primary black and others more light (color palette site), i thing it will fix the isuee, try right away chaning in the broswer pane those varables
 //!add ability to move ships when they already placed on the setup board
-//!check how site looks on mobile
 // todo fix notification area CSS
-// todo make tiles around destroyed ship become visible (water) (as there is no need to hide them)
+// * make tiles around destroyed ship become visible (water) (as there is no need to hide them)
+// todo make the warning-notification box change its width smoother using inside content for the width 
 // todo add menu so a player can save a game and restart (use dialog window)
+
+
+/*
+  !check how site looks on mobile 
+*              and
+  todo change the way how ships are rendered, like it was made here with shadows https://seb-graf.github.io/battleship/ (examen how it was done it)
+*/
 // todo use localStorage so when player exit he can continue playing? (or go to menu and saves the game in its state) - not necessary
-
-
 // todo when everything is complete use pritter in some places to make code look consistent
+// todo optimize using chatgpt randomAttackOpponent (there's a branch for that)
 // ? ask CHATGPT can i improve something or write in a more clear way, add and commit as an optimization 
 // todo When everything complete test the game (all functionality (if saves are added, quitting in the middle of the game, closing the tab) winning, losing many times then (again quitting, saving)); if there will be time check how others achieve the result
