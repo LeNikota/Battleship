@@ -90,9 +90,9 @@ describe('gameboard', () => {
     gameboard.placeShip(ship, 5, 5)
     gameboard.receiveAttack(0,0)
     gameboard.receiveAttack(5,6)
-    expect(gameboard.getTile(0,0)).toEqual({hit:true});
-    expect(gameboard.getTile(0,1)).toEqual({hit:false});
-    expect(gameboard.getTile(5,6)).toEqual({hit:true, ship});
+    expect(gameboard.getTile(0,0)).toEqual({hit:true, cords: [0, 0]});
+    expect(gameboard.getTile(0,1)).toEqual({hit:false, cords: [0, 1]});
+    expect(gameboard.getTile(5,6)).toEqual({hit:true, ship, cords: [5, 6]});
    });
 
   it('should prevent attacking the same tile twice', () => {

@@ -3,7 +3,7 @@ export default class Gameboard {
   #ships;
 
   constructor(){
-    this.#tiles = Array.from(new Array(10), () => new Array(10).fill().map(() => ({hit: false})))
+    this.#tiles = Array.from(new Array(10), (v,x) => new Array(10).fill().map((v,y) => ({hit: false, cords: [x, y]})))
     this.#ships = [];
   }
 
@@ -55,11 +55,11 @@ export default class Gameboard {
     
     if (isHorizontal) {
       for (let i = y; i <= y + length; i++) {
-        this.#tiles[x][i] = { hit: false, ship }        
+        this.#tiles[x][i].ship = ship
       }
     } else {
       for (let i = x; i <= x + length; i++) {
-        this.#tiles[i][y] = { hit: false, ship }        
+        this.#tiles[i][y].ship = ship
       }
     }
 
@@ -99,7 +99,7 @@ export default class Gameboard {
   }
 
   reset(){
-    this.#tiles = Array.from(new Array(10), () => new Array(10).fill().map(() => ({hit: false})))
+    this.#tiles = Array.from(new Array(10), (v,x) => new Array(10).fill().map((v,y) => ({hit: false, cords: [x, y]})))
     this.#ships = [];
   }
 
@@ -131,7 +131,7 @@ export default class Gameboard {
   }
 
   getTiles(){
-    return this.#tiles.map(row => row.map(tile => ({...tile})));
+    return this.#tiles.map(row => row.map(tile => ({...tile, cords: [...tile.cords]})));
   }
 
   getTilesAroundShip(ship) {

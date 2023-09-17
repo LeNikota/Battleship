@@ -30,8 +30,8 @@ describe('a player', () => {
 
     const player1BoardTilesAfterAttack = player1.getBoardTiles() 
     const player2BoardTilesAfterAttack = player2.getBoardTiles()
-    player1BoardTilesAfterAttack[0][0] = {hit: true}
-    player2BoardTilesAfterAttack[0][0] = {hit: true}
+    player1BoardTilesAfterAttack[0][0] = {hit: true, cords: [0, 0]}
+    player2BoardTilesAfterAttack[0][0] = {hit: true, cords: [0, 0]}
 
     player1.attackOpponent(0, 0)
     expect(player2.getBoardTiles()).toEqual(player1BoardTilesAfterAttack)
@@ -61,7 +61,7 @@ describe('an AI player', () => {
     ai.setOpponent(player);
 
     const playerBoardTilesAfterAttack = player.getBoardTiles() 
-    playerBoardTilesAfterAttack[0][1] = {hit: true}
+    playerBoardTilesAfterAttack[0][1] = {hit: true, cords: [0, 1]}
 
     ai.randomAttackOpponent();
     expect(player.getBoardTiles()).toEqual(playerBoardTilesAfterAttack)
@@ -75,8 +75,8 @@ describe('an AI player', () => {
     ai.setOpponent(player);
 
     const playerBoardTilesAfterAttack = player.getBoardTiles() 
-    playerBoardTilesAfterAttack[0][0] = {hit: true}
-    playerBoardTilesAfterAttack[0][1] = {hit: true}
+    playerBoardTilesAfterAttack[0][0] = {hit: true, cords: [0, 0]}
+    playerBoardTilesAfterAttack[0][1] = {hit: true, cords: [0, 1]}
 
     ai.randomAttackOpponent();
     player.attackOpponent(0, 0);
