@@ -46,43 +46,11 @@ function fillBoardsWithTiles() {
 }
 
 function resetBoards() {
-  clearBoard('setup', true)
-  clearBoard('player', true)
-  clearBoard('enemy', true)
+  clearBoard('setup')
+  clearBoard('player')
+  clearBoard('enemy')
   fillBoardsWithTiles()
   resetShipSelectionEl()
-}
-
-function renderTiles(board, boardTiles) {
-  for (let x = 0; x < 10; x++) {
-    for (let y = 0; y < 10; y++) {
-      const tile = document.createElement('div');
-      tile.classList.add('board__tile')
-      if(boardTiles[x][y].hit)
-        tile.classList.add('water')
-      if(boardTiles[x][y].hit && boardTiles[x][y].ship)
-        tile.classList.add('hit')
-      tile.dataset.x = x;
-      tile.dataset.y = y;
-      board.appendChild(tile)
-    }
-  }
-}
-
-function createShip(board, size = 1, isHorizontal = true, isSunk = false, x = 0, y = 0) {
-  const ship = document.createElement('div');
-  ship.className = 'ship';
-  if (isHorizontal) {
-    ship.style.width = `${50 * size}px`
-  } else {
-    ship.style.height = `${50 * size}px`
-  }
-  if (isSunk){
-    ship.classList.add('hit')
-  }
-  ship.style.top = `${50 * x - 3}px`
-  ship.style.left = `${50 * y - 3}px`
-  board.appendChild(ship)
 }
 
 function selectShip(shipEl) {
@@ -123,7 +91,7 @@ function shipSelectionElClick({ target }) {
 }
 
 function setupBoardElClick({ target }) {
-  if (!selectedShipEl || target.className !== 'board__tile') {
+  if (!(selectedShipEl && target.classList.contains('board__tile'))) {
     return;
   }
 
@@ -135,7 +103,7 @@ function setupBoardElClick({ target }) {
 }
 
 function enemyBoardElClick({ target }) {
-  if (target.className !== 'board__tile') {
+  if (!target.classList.contains( 'board__tile')) {
     return;
   }
 
@@ -162,17 +130,12 @@ function setupButtonContainerElClick({ target }) {
   }
 }
 
-function clearBoard(type, clearTiles = false) {
-  const boardEl = BOARD_TYPES[type]
-
-  if(clearTiles){
-    while (boardEl.firstChild) {
-      boardEl.removeChild(boardEl.lastChild);
-    }
-    return;
+function clearBoard(type) {
+  const boardEl = BOARD_TYPES[type];
+  
+  while (boardEl.firstChild) {
+    boardEl.removeChild(boardEl.lastChild);
   }
-
-  boardEl.querySelectorAll('.ship').forEach(ship => ship.remove())
 }
 
 function clearShipSelectionEl(){
@@ -227,19 +190,66 @@ function updateSetupWindow(board) {
   }
 }
 
-function renderBoard(type, board, rerenderTiles = false, renderShips = true) {
-  clearBoard(type, rerenderTiles)
-  const boardEl = BOARD_TYPES[type]
+function renderBoard(type, board, renderShip = true) {
+  clearBoard(type);
+  const boardEl = BOARD_TYPES[type];
+  const tilesEl = [];
 
-  if(rerenderTiles){
-    renderTiles(boardEl, board.getTiles())
+  for (const row of board.getTiles()) {
+    tilesEl.push([])
+    for (const tile of row) {
+      const [x, y] = tile.cords
+      const tileEl = document.createElement('div');
+      tileEl.classList.add('board__tile')
+
+      if(tile.hit)
+        tileEl.classList.add('water')
+      if(tile.hit && tile.ship)
+        tileEl.classList.add('hit')
+
+      tileEl.dataset.x = x;
+      tileEl.dataset.y = y;
+      tilesEl[x].push(tileEl)
+    }
   }
-  
-  if(renderShips){
-    board.getShips().forEach(({ ship, x, y }) => {
-      createShip(boardEl, ship.getLength(), ship.getOrientation(), ship.isSunk(), x, y);
-  });
+
+  if(!renderShip){
+    boardEl.append(...tilesEl.flat())
+    return;
   }
+
+  board.getShips().forEach(({ship, x, y}) => {
+    const isHorizontal = ship.getOrientation()
+    const shipStart = isHorizontal ? y : x
+    const shipEnd = (isHorizontal ? y : x) + ship.getLength() - 1
+
+    if(shipStart === shipEnd){
+      tilesEl[x][y].classList.add('ship', 'one')
+      return
+    }
+
+    if (isHorizontal) {
+      for (let i = y; i <=  shipEnd; i++) {
+        if(shipStart === i)
+          tilesEl[x][i].classList.add('ship', 'start')
+        else if(i < shipEnd)
+          tilesEl[x][i].classList.add('ship')
+        else
+          tilesEl[x][i].classList.add('ship', 'end')
+      }
+    } else {
+      for (let i = x; i <=  shipEnd; i++) {
+        if(shipStart === i)
+          tilesEl[i][y].classList.add('ship', 'vertical', 'start')
+        else if(i < shipEnd)
+          tilesEl[i][y].classList.add('ship', 'vertical')
+        else
+          tilesEl[i][y].classList.add('ship', 'vertical', 'end')
+      }
+    }
+  })
+
+  boardEl.append(...tilesEl.flat())
 }
 
 function toggleDialogWindow() {

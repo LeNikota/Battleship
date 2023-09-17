@@ -28,16 +28,16 @@ function handleSetUpBoardClick({size, isHorizontal, x, y}) {
 }
 
 function handleEnemyBoardClick({x, y}) {
-  try {
+    try {
     player.attackOpponent(x, y)
-    dom.renderBoard('enemy', ai.getBoard(), true, false)
+    dom.renderBoard('enemy', ai.getBoard(), false)
     if(player.checkWin()){
       handleEndGameEvent(true)
       return;
     }
     
     ai.randomAttackOpponent()
-    dom.renderBoard('player', player.getBoard(), true)
+    dom.renderBoard('player', player.getBoard())
     if(ai.checkWin()){
       handleEndGameEvent(false)
       return;
@@ -104,15 +104,10 @@ PubSub.subscribe('startGame', handleStartGameEvent)
 // todo complete this project already there's no time left! university awaits! and english learning too
 //! may be revert colors, primary black and others more light (color palette site), i thing it will fix the isuee, try right away chaning in the broswer pane those varables
 //!add ability to move ships when they already placed on the setup board
-// todo add menu so a player can save a game and restart (use dialog window)
-
-
-/*
-  !check how site looks on mobile 
-*              and
-  todo change the way how ships are rendered, like it was made here with shadows https://seb-graf.github.io/battleship/ (examen how it was done it)
-*/
+//!check how site looks on mobile (change the way the setup window is being displayed, it doesn't work properly)
+// todo add menu so a player can save a game and restart (use dialog window), and also change the color pallet
 // todo use localStorage so when player exit he can continue playing? (or go to menu and saves the game in its state) - not necessary
+
 // todo when everything is complete use pritter in some places to make code look consistent
 // Todo: Optimize using ChatGPT randomAttackOpponent (there's a branch for that, use the method the getTilesAroundShip function uses to check tile validity).
 // ? ask CHATGPT can i improve something or write in a more clear way, add and commit as an optimization 
