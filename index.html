@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Battleship</title>
+<link rel="icon" href="ship.png"><script defer src="script.js"></script></head>
+<body>
+  <h1>BATTLESHIP</h1>
+  <main>
+    <div class="board__container">
+      <h2>My fleet</h2>
+      <div class="board player"></div>
+    </div>
+    <div class="board__container">
+      <h2>Enemy fleet</h2>
+      <div class="board enemy"></div>
+    </div>
+  </main>
+
+  <div class="dialog">
+    <div class="dialog-window">
+      <h2>Welcome to the battleship game</h2>
+      <h3>Place your ships</h3>
+      <div class="game-setup">
+        <div class="board__container">
+          <div class="board setup"></div>
+        </div>
+        <div class="dialog-window__sidebar">
+          <div class="ship-selection">
+            <div class="ship-selection-option">
+              <p class="amount">1x</p>
+              <div class="large" style="--size: 4"></div>
+            </div>
+            <div class="ship-selection-option">
+              <p class="amount">2x</p>
+              <div class="big" style="--size: 3"></div>
+            </div>
+            <div class="ship-selection-option">
+              <p class="amount">3x</p>
+              <div class="middle" style="--size: 2"></div>
+            </div>
+            <div class="ship-selection-option">
+              <p class="amount">4x</p>
+              <div class="small" style="--size: 1"></div>
+            </div>
+          </div>
+          <div class="setup-button-container">
+            <button>Random</button>
+            <button>Reset</button>
+            <button>Rotate (R)</button>
+            <button>Start</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="message">
+    <img src="2d004994e7f33e7d4976.svg" />
+    <div class="message__text"></div>
+  </div>
+</body>
+</html>
