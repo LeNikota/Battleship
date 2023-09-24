@@ -11,11 +11,12 @@ const PubSub = {
     this.events[eventName].forEach((fn) => fn(data));
   },
 
-  removeAllEvents(){
-    for (const eventName in this.events) {
+  removeAllEvents() {
+    const eventNames = Object.keys(this.events);
+    eventNames.forEach((eventName) => {
       delete this.events[eventName];
-    }
-  }
+    });
+  },
 };
 
-export default PubSub
+export default PubSub;

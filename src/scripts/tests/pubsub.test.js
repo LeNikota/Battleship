@@ -1,4 +1,4 @@
-import PubSub from '../pubsub'
+import PubSub from '../pubsub';
 
 describe('pubsub', () => {
   beforeEach(() => {
@@ -10,19 +10,19 @@ describe('pubsub', () => {
   });
 
   it('should subscribe to an event and publish data to subscribers', () => {
-    PubSub.subscribe('update', mockFn1)
-    PubSub.publish('update', 'world')
+    PubSub.subscribe('update', mockFn1);
+    PubSub.publish('update', 'world');
 
     expect(mockFn1).toHaveReturnedWith('Hello world');
-    expect(mockFn2).not.toBeCalled()
+    expect(mockFn2).not.toBeCalled();
   });
 
   it('should handle multiple subscribers for an event', () => {
-    PubSub.subscribe('update', mockFn1)
-    PubSub.subscribe('update', mockFn2)
+    PubSub.subscribe('update', mockFn1);
+    PubSub.subscribe('update', mockFn2);
 
-    PubSub.publish('update', 'world')
-    
+    PubSub.publish('update', 'world');
+
     expect(mockFn1).toHaveReturnedWith('Hello world');
     expect(mockFn2).toHaveReturnedWith('Great world');
   });

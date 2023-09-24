@@ -4,27 +4,27 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: './src/scripts/index.js',
   output: {
-    path: path.resolve(__dirname,'dist'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'script.js',
-    clean: true
+    clean: true,
   },
   module: {
     rules: [
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
       },
-    ]
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Battleship',
       favicon: 'src/ship.png',
-      template: 'src/template.html'
-    })
-  ]
-}
+      template: 'src/template.html',
+    }),
+  ],
+};

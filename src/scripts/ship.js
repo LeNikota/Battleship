@@ -1,32 +1,34 @@
 export default class Ship {
   #length;
+
   #hits;
+
   #isHorizontal;
 
-  constructor(length = 1){
+  constructor(length = 1) {
     this.#length = length;
     this.#hits = 0;
     this.#isHorizontal = true;
   }
 
-  isSunk(){
+  isSunk() {
     return this.#hits >= this.#length;
   }
 
-  hit(){
+  hit() {
     this.#hits++;
   }
 
-  getOrientation(){
+  getOrientation() {
     return this.#isHorizontal;
   }
 
-  toggleOrientation(){
+  toggleOrientation() {
     this.#isHorizontal = !this.#isHorizontal;
     return this;
   }
 
-  getLength(){
+  getLength() {
     return this.#length;
   }
 }

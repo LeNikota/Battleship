@@ -1,56 +1,55 @@
-import PubSub from "./pubsub"
-import notificationImg from '../notification.svg'
+import PubSub from './pubsub';
+import notificationImg from '../notification.svg';
 import warningImg from '../warning.svg';
 
-const dialogEl = document.querySelector('.dialog')
-const setupBoardEl = document.querySelector('.setup.board')
-const playerBoardEl = document.querySelector('.player.board')
-const enemyBoardEl = document.querySelector('.enemy.board')
-const boards = document.querySelectorAll('.board')
-const shipSelectionEl = document.querySelector('.ship-selection')
-const setupButtonContainerEl = document.querySelector('.setup-button-container')
-const messageEl = document.querySelector('.message')
+const dialogEl = document.querySelector('.dialog');
+const setupBoardEl = document.querySelector('.setup.board');
+const playerBoardEl = document.querySelector('.player.board');
+const enemyBoardEl = document.querySelector('.enemy.board');
+const boards = document.querySelectorAll('.board');
+const shipSelectionEl = document.querySelector('.ship-selection');
+const setupButtonContainerEl = document.querySelector('.setup-button-container');
+const messageEl = document.querySelector('.message');
 
 const SHIP_SIZES_LIST = {
   large: 4,
   big: 3,
   middle: 2,
-  small: 1
-}
+  small: 1,
+};
 const BOARD_TYPES = {
   setup: setupBoardEl,
   player: playerBoardEl,
-  enemy: enemyBoardEl
-}
+  enemy: enemyBoardEl,
+};
 const IMAGES_LIST = {
   notification: notificationImg,
-  warning: warningImg
-}
-let selectedShipEl = null
-let isHorizontal = true
-let messageTimeoutID = null
-
+  warning: warningImg,
+};
+let selectedShipEl = null;
+let isHorizontal = true;
+let messageTimeoutID = null;
 
 function fillBoardsWithTiles() {
-  boards.forEach(board => {
+  boards.forEach((board) => {
     for (let x = 0; x < 10; x++) {
       for (let y = 0; y < 10; y++) {
         const tile = document.createElement('div');
-        tile.className = 'board__tile'
+        tile.className = 'board__tile';
         tile.dataset.x = x;
         tile.dataset.y = y;
-        board.appendChild(tile)
+        board.appendChild(tile);
       }
     }
   });
 }
 
 function resetBoards() {
-  clearBoard('setup')
-  clearBoard('player')
-  clearBoard('enemy')
-  fillBoardsWithTiles()
-  resetShipSelectionEl()
+  clearBoard('setup');
+  clearBoard('player');
+  clearBoard('enemy');
+  fillBoardsWithTiles();
+  resetShipSelectionEl();
 }
 
 function selectShip(shipEl) {
@@ -75,7 +74,7 @@ function toggleShipOrientation() {
 
 function pointerEvents(enable = true) {
   const html = document.documentElement;
-  html.style.pointerEvents = enable ? 'auto' : 'none'
+  html.style.pointerEvents = enable ? 'auto' : 'none';
 }
 
 function shipSelectionElClick({ target }) {
@@ -99,47 +98,49 @@ function setupBoardElClick({ target }) {
   const x = +target.dataset.x;
   const y = +target.dataset.y;
 
-  PubSub.publish('setupBoardClick', {size, isHorizontal, x , y})
+  PubSub.publish('setupBoardClick', {
+    size, isHorizontal, x, y,
+  });
 }
 
 function enemyBoardElClick({ target }) {
-  if (!target.classList.contains( 'board__tile')) {
+  if (!target.classList.contains('board__tile')) {
     return;
   }
 
   const x = +target.dataset.x;
   const y = +target.dataset.y;
 
-  PubSub.publish('enemyBoardClick', {x, y})
+  PubSub.publish('enemyBoardClick', { x, y });
 }
 
 function setupButtonContainerElClick({ target }) {
   switch (target.textContent) {
     case 'Random':
-      PubSub.publish('placeShipRandomly', null)
+      PubSub.publish('placeShipRandomly', null);
       break;
     case 'Reset':
-      PubSub.publish('resetBoard', null)
+      PubSub.publish('resetBoard', null);
       break;
     case 'Rotate (R)':
-      toggleShipOrientation()
+      toggleShipOrientation();
       break;
     case 'Start':
-      PubSub.publish('startGame', null)
+      PubSub.publish('startGame', null);
       break;
   }
 }
 
 function clearBoard(type) {
   const boardEl = BOARD_TYPES[type];
-  
+
   while (boardEl.firstChild) {
     boardEl.removeChild(boardEl.lastChild);
   }
 }
 
-function clearShipSelectionEl(){
-  while(shipSelectionEl.firstChild) {
+function clearShipSelectionEl() {
+  while (shipSelectionEl.firstChild) {
     shipSelectionEl.removeChild(shipSelectionEl.firstChild);
   }
 }
@@ -162,23 +163,23 @@ function resetShipSelectionEl() {
       <p class="amount">4x</p>
       <div class="small" style="--size: 1"></div>
     </div>   
-  `
+  `;
 }
 
 function updateSetupWindow(board) {
-  renderBoard('setup', board)
+  renderBoard('setup', board);
 
-  if(board.getShips().length === 10){
-    deselectShip()
+  if (board.getShips().length === 10) {
+    deselectShip();
     clearShipSelectionEl();
   }
 
-  if(board.getShips().length === 0){
-    deselectShip()
-    resetShipSelectionEl()
+  if (board.getShips().length === 0) {
+    deselectShip();
+    resetShipSelectionEl();
   }
 
-  if(selectedShipEl){
+  if (selectedShipEl) {
     const amountDisplay = selectedShipEl.previousElementSibling;
     const amountLeft = amountDisplay.textContent[0] - 1;
     amountDisplay.textContent = `${amountLeft}x`;
@@ -195,88 +196,94 @@ function renderBoard(type, board, renderShip = true) {
   const boardEl = BOARD_TYPES[type];
   const tilesEl = [];
 
-  for (const row of board.getTiles()) {
-    tilesEl.push([])
-    for (const tile of row) {
-      const [x, y] = tile.cords
+  board.getTiles().forEach((row) => {
+    const tileRow = [];
+    row.forEach((tile) => {
+      const [x, y] = tile.cords;
       const tileEl = document.createElement('div');
-      tileEl.classList.add('board__tile')
+      tileEl.classList.add('board__tile');
 
-      if(tile.hit)
-        tileEl.classList.add('water')
-      if(tile.hit && tile.ship)
-        tileEl.classList.add('hit')
+      if (tile.hit) {
+        tileEl.classList.add('water');
+      }
+      if (tile.hit && tile.ship) {
+        tileEl.classList.add('hit');
+      }
 
       tileEl.dataset.x = x;
       tileEl.dataset.y = y;
-      tilesEl[x].push(tileEl)
-    }
-  }
+      tileRow.push(tileEl);
+    });
+    tilesEl.push(tileRow);
+  });
 
-  if(!renderShip){
-    boardEl.append(...tilesEl.flat())
+  if (!renderShip) {
+    boardEl.append(...tilesEl.flat());
     return;
   }
 
-  board.getShips().forEach(({ship, x, y}) => {
-    const isHorizontal = ship.getOrientation()
-    const shipStart = isHorizontal ? y : x
-    const shipEnd = (isHorizontal ? y : x) + ship.getLength() - 1
+  board.getShips().forEach(({ ship, x, y }) => {
+    const isHorizontal = ship.getOrientation();
+    const shipStart = isHorizontal ? y : x;
+    const shipEnd = (isHorizontal ? y : x) + ship.getLength() - 1;
 
-    if(shipStart === shipEnd){
-      tilesEl[x][y].classList.add('ship', 'one')
-      return
+    if (shipStart === shipEnd) {
+      tilesEl[x][y].classList.add('ship', 'one');
+      return;
     }
 
     if (isHorizontal) {
-      for (let i = y; i <=  shipEnd; i++) {
-        if(shipStart === i)
-          tilesEl[x][i].classList.add('ship', 'start')
-        else if(i < shipEnd)
-          tilesEl[x][i].classList.add('ship')
-        else
-          tilesEl[x][i].classList.add('ship', 'end')
+      for (let i = y; i <= shipEnd; i++) {
+        if (shipStart === i) {
+          tilesEl[x][i].classList.add('ship', 'start');
+        } else if (i < shipEnd) {
+          tilesEl[x][i].classList.add('ship');
+        } else {
+          tilesEl[x][i].classList.add('ship', 'end');
+        }
       }
     } else {
-      for (let i = x; i <=  shipEnd; i++) {
-        if(shipStart === i)
-          tilesEl[i][y].classList.add('ship', 'vertical', 'start')
-        else if(i < shipEnd)
-          tilesEl[i][y].classList.add('ship', 'vertical')
-        else
-          tilesEl[i][y].classList.add('ship', 'vertical', 'end')
+      for (let i = x; i <= shipEnd; i++) {
+        if (shipStart === i) {
+          tilesEl[i][y].classList.add('ship', 'vertical', 'start');
+        } else if (i < shipEnd) {
+          tilesEl[i][y].classList.add('ship', 'vertical');
+        } else {
+          tilesEl[i][y].classList.add('ship', 'vertical', 'end');
+        }
       }
     }
-  })
+  });
 
-  boardEl.append(...tilesEl.flat())
+  boardEl.append(...tilesEl.flat());
 }
 
 function toggleDialogWindow() {
-  dialogEl.style.display =
-    dialogEl.style.display === "none" ? "flex" : "none";
+  dialogEl.style.display = dialogEl.style.display === 'none' ? 'flex' : 'none';
 }
 
 function displayMessage(message, type = 'warning', timer = 2000) {
-  clearTimeout(messageTimeoutID)
+  clearTimeout(messageTimeoutID);
   messageEl.classList.remove('warning', 'notification');
   messageEl.classList.add(type);
   messageEl.firstElementChild.src = IMAGES_LIST[type];
   messageEl.lastElementChild.textContent = message;
-  
-  const width = messageEl.firstElementChild.offsetWidth + messageEl.lastElementChild.offsetWidth + +getComputedStyle(messageEl, null).getPropertyValue('padding').match(/\d+/)[0]
+
+  const width = messageEl.firstElementChild.offsetWidth + messageEl.lastElementChild.offsetWidth + +getComputedStyle(messageEl, null).getPropertyValue('padding').match(/\d+/)[0];
   messageEl.style.width = `${width}px`;
   messageEl.style.top = '80%';
-  
-  messageTimeoutID  = setTimeout(() => messageEl.style.top = '140%', timer);
+
+  messageTimeoutID = setTimeout(() => { messageEl.style.top = '140%'; }, timer);
 }
 
 function init() {
-  fillBoardsWithTiles()
-  shipSelectionEl.addEventListener('click', shipSelectionElClick)
-  setupBoardEl.addEventListener('click', setupBoardElClick)
-  enemyBoardEl.addEventListener('click', enemyBoardElClick)
-  setupButtonContainerEl.addEventListener('click', setupButtonContainerElClick)
+  fillBoardsWithTiles();
+  shipSelectionEl.addEventListener('click', shipSelectionElClick);
+  setupBoardEl.addEventListener('click', setupBoardElClick);
+  enemyBoardEl.addEventListener('click', enemyBoardElClick);
+  setupButtonContainerEl.addEventListener('click', setupButtonContainerElClick);
 }
 
-export { init, resetBoards, updateSetupWindow, renderBoard, displayMessage, toggleDialogWindow, pointerEvents }
+export {
+  init, resetBoards, updateSetupWindow, renderBoard, displayMessage, toggleDialogWindow, pointerEvents,
+};

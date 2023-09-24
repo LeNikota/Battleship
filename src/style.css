@@ -1,42 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&family=Big+Shoulders+Stencil+Text:wght@700&display=swap');
-:root{
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&family=Big+Shoulders+Stencil+Text:wght@700&display=swap");
+:root {
   box-sizing: border-box;
-  font-family: 'Barlow', sans-serif;
+  font-family: "Barlow", sans-serif;
   user-select: none;
   --primary: #eeeeee;
-  --secondary: #F05454;
-  --tertiary: #30475E;
-  --text: #1D242B;
-  --border: #160F30;
+  --secondary: #f05454;
+  --tertiary: #30475e;
+  --text: #1d242b;
+  --border: #160f30;
   --border-inner: #160f3017;
-  --border-ship:#0065d8;
-  --bg-ship:rgba(0, 0, 255, 0.06);
-  --border-ship-sunk:#0065d8;
-  --bg-ship-sunk:#EB455F;
-  --border-ship-selected:rgb(17, 235, 71);
-  --bg-ship-selected:rgba(0, 255, 64, .05);
-  --tile-hit:#EB455F;
-  --tile-hit-water:#5287ff;
+  --border-ship: #0065d8;
+  --bg-ship: rgba(0, 0, 255, 0.06);
+  --border-ship-sunk: #0065d8;
+  --bg-ship-sunk: #eb455f;
+  --border-ship-selected: rgb(17, 235, 71);
+  --bg-ship-selected: rgba(0, 255, 64, 0.05);
+  --tile-hit: #eb455f;
+  --tile-hit-water: #5287ff;
   --dialog-bg: #00000050;
   --button: rgb(220, 220, 255);
-  --border-warning: #EB455F;
+  --border-warning: #eb455f;
   --border-notification: #273dff;
 }
 
-body{
+body {
   margin: 0 auto;
   max-width: 1200px;
   background-color: var(--primary);
   color: var(--text);
 }
 
-h1{
-  font-family: 'Big Shoulders Stencil Text', cursive;
+h1 {
+  font-family: "Big Shoulders Stencil Text", cursive;
   text-align: center;
-  font-size: 6rem;  
+  font-size: 6rem;
 }
 
-h2{
+h2 {
   font-weight: 500;
   font-size: 2rem;
   margin: 0px;
@@ -46,15 +46,15 @@ img {
   height: 30px;
 }
 
-button:hover{
-  filter:opacity(0.9);
+button:hover {
+  filter: opacity(0.9);
 }
 
-button:active{
+button:active {
   filter: opacity(0.7);
 }
 
-main{
+main {
   margin: 60px 0;
   display: flex;
   justify-content: center;
@@ -63,7 +63,7 @@ main{
 
 /* Board */
 
-.board{
+.board {
   width: 500px;
   height: 500px;
   display: grid;
@@ -78,27 +78,27 @@ main{
   position: relative;
 }
 
-.board__tile:nth-child(10n){
+.board__tile:nth-child(10n) {
   border-right: none;
 }
 
-.board__tile:nth-child(n + 91){
+.board__tile:nth-child(n + 91) {
   border-bottom: none;
 }
 
-.board__tile.water{
+.board__tile.water {
   background-color: var(--tile-hit-water);
 }
 
-.board__tile.hit{
+.board__tile.hit {
   background-color: var(--tile-hit);
 }
 
-.board.player{
+.board.player {
   cursor: not-allowed;
 }
 
-.board.enemy{
+.board.enemy {
   cursor: crosshair;
 }
 
@@ -129,7 +129,7 @@ main{
   border-right: solid var(--border-ship) 3px;
 }
 
-.ship.vertical::before{
+.ship.vertical::before {
   border: solid var(--border-ship) 3px;
   border-top: none;
   border-bottom: none;
@@ -143,19 +143,19 @@ main{
   border-bottom: solid var(--border-ship) 3px;
 }
 
-.hit::before{
+.hit::before {
   background-color: var(--bg-ship-sunk) !important;
   border-color: var(--border-ship-sunk) !important;
 }
 
-.selected{
+.selected {
   background-color: var(--bg-ship-selected) !important;
   border-color: var(--border-ship-selected) !important;
 }
 
 /* Dialog window */
 
-.dialog{
+.dialog {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -167,43 +167,43 @@ main{
   align-items: center;
 }
 
-.dialog-window{
+.dialog-window {
   background-color: var(--primary);
   padding: 1.25rem;
   text-align: center;
 }
 
-.dialog-window h3{
+.dialog-window h3 {
   font-weight: 400;
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
 
-.dialog-window__sidebar{
+.dialog-window__sidebar {
   display: grid;
   align-content: space-between;
 }
 
-.setup-button-container{
+.setup-button-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   height: 150px;
 }
 
-.setup-button-container button{
+.setup-button-container button {
   background: var(--button);
-	color: inherit;
-	border: none;
-	padding: 0;
-	font: inherit;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
   font-size: 1.25rem;
-	cursor: pointer;
-	outline: inherit;
+  cursor: pointer;
+  outline: inherit;
   transition: filter ease 0.2s;
 }
 
-.game-setup{
+.game-setup {
   display: flex;
   justify-content: center;
   gap: 1rem;
@@ -211,18 +211,18 @@ main{
 
 /* Ship selection */
 
-.ship-selection{
+.ship-selection {
   min-width: 250px;
 }
 
-.ship-selection-option{
+.ship-selection-option {
   display: grid;
   grid-template-columns: 30px 1fr;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.ship-selection-option p{
+.ship-selection-option p {
   font-size: 1.25rem;
   margin: 0;
 }
@@ -243,7 +243,7 @@ main{
   gap: 10px;
 }
 
-.ship-selection.rotated .ship-selection-option{
+.ship-selection.rotated .ship-selection-option {
   grid-template-columns: 1fr;
   grid-template-rows: 30px 1fr;
   align-items: flex-start;
@@ -256,12 +256,12 @@ main{
 
 /* Message box */
 
-.message{
+.message {
   background-color: var(--primary);
   border: var(--border) 4px solid;
   border-radius: 4px;
   position: fixed;
-  top: 140%; 
+  top: 140%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 1rem;
@@ -275,11 +275,11 @@ main{
   overflow: hidden;
 }
 
-.message img{
+.message img {
   height: 50px;
 }
 
-.message__text{
+.message__text {
   font-size: 1.5rem;
   font-weight: 500;
 }
